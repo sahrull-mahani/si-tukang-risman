@@ -1,0 +1,141 @@
+/* dropdown multy level */
+.dropdown-menu li {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}
+
+.dropdown-menu .dropdown-submenu-left {
+    right: 100%;
+    left: auto;
+}
+
+.dropdown-menu>li:hover>.dropdown-submenu {
+    display: block;
+}
+
+/* endDropdown */
+
+.lc a {
+    color: #131313;
+}
+
+.lc i {
+    color: rgba(47, 164, 255, 1);
+}
+
+.lc a:hover {
+    color: #F95700FF;
+}
+
+.lc1 i {
+    color: #131313;
+}
+
+
+.lc1 a:hover {
+    color: rgb(247, 247, 247);
+}
+
+/* bg-gradient */
+.bg-custom {
+    background: rgb(47, 164, 255);
+    background: radial-gradient(circle, rgba(47, 164, 255, 1) 0%, rgba(14, 24, 95, 1) 100%);
+}
+
+.navbar li:hover {
+    background-color: #F95700FF;
+}
+
+.navbar .navbar-nav .nav-item {
+
+    transition: all 0.5s;
+}
+
+.navbar li:hover>ul.dropdown-menu {
+    display: block;
+}
+
+/* hoverzoom */
+.zoom {
+    /* padding: 50px; */
+    transition: transform .2s;
+    /* Animation */
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.zoom>strong {
+    color: #000;
+}
+
+.zoom:hover {
+    transform: scale(1.2);
+    /* (150% zoom)*/
+}
+
+/* endhoverzoom */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.link {
+    color: rgb(43, 42, 42);
+}
+
+.link:hover {
+    color: #151B54;
+    transition: all 0.3s;
+}
+
+/* video galery */
+/* 
+.videoThumb {
+    filter: grayscale(100);
+    transition: filter ease-in-out 1s;
+}
+
+.videoThumb:hover {
+    filter: grayscale(0);
+} */
+
+.custom-tooltip {
+    /* --bs-tooltip-bg: var(--bs-primary); */
+    font-size: 15px;
+}
+
+.img-cover {
+    height: 200px;
+    overflow: hidden;
+}
+
+.img-cover img {
+    filter: grayscale(100);
+    height: 200px;
+    object-fit: cover;
+    transition: transform ease-in 10s, filter ease-in-out .5s;
+}
+
+.img-cover:hover img {
+    transform: scale(2);
+    filter: grayscale(0);
+}
+
+/* endVideoGalery */
+
+/* divider */
+.hr {
+    border: 0;
+    height: 3px;
+    background: -webkit-linear-gradient(right, transparent, rgba(0, 0, 0, 1));
+    background: linear-gradient(right, transparent, rgba(0, 0, 0, 1));
+    margin: 0 300px 20px 0;
+}
+
+/* enddivider */

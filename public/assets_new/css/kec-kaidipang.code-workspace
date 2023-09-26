@@ -1,0 +1,16 @@
+{
+  "folders": [
+	{
+		"path": "..\\..\\.."
+	},
+	{
+		"path": "..\\..\\..\\..\\template\\website-menu-03"
+	},
+	{
+		"path": "..\\..\\..\\..\\template\\website-menu-16"
+	}
+],
+"settings": {
+    "liveServer.settings.multiRootWorkspaceName": "website-kecamatan"
+}
+}
