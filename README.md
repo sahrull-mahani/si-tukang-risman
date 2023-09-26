@@ -1,63 +1,70 @@
-# CodeIgniter 4 Application Starter
+# INSTALL THIS APP
 
-## What is CodeIgniter?
+## LANGKAH - LANGKAH
+1. clone project terlebih dahulu
+```javascript
+git clone https://github.com/sahrull-mahani/si-tukang-risman.git
+```
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+2. Composer update
+```javascript
+composer require codeigniter4/framework:4.3.6 -W
+```
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+3. salin file **env** menjadi **.env**
+```javascript
+cp env .env
+```
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+4. edit file env *hilangkan tanda pagar #*
+    - `# CI_ENVIRONMENT = development` => `CI_ENVIRONMENT = development`
+    - `# app.baseURL = 'http://localhost:8080/'` => `app.baseURL = 'http://localhost:8080/'`
+    - `# database.default.hostname = localhost` => `database.default.hostname = localhost`
+    - `# database.default.database = si-tukang` => `database.default.database = si-tukang`
+    - `# database.default.username = root` => `database.default.username = root`
+    - `# database.default.password = ` => `database.default.password = `
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+5. buat database baru di **PHPMyadmin** dengan nama [si-tukang]
 
-## Installation & updates
+6. Jalanakan migrate
+```javascript
+php spark migrate
+```
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+7. Jalanakan seeder
+```javascript
+php spark db:seed basic
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+8. Jalanakan seeder
+```javascript
+php spark db:seed basic
+```
 
-## Setup
+9. Jalankan aplikasi
+```javascript
+php spark serve
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+10. buka aplikasi di browser
+```javascript
+localhost:8080
+```
 
-## Important Change with index.php
+11. buat folder di [C:\xampp\htdocs\si-tukang-risman\writable]
+    - thumb
+    - img
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+===============================================================================
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## REFRESH APP
 
-**Please** read the user guide for a better explanation of how CI4 works!
+1. refresh migrate
+```javascript
+php spark migrate:refresh
+```
 
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.4 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+2. Jalanakan seeder
+```javascript
+php spark db:seed basic
+```
