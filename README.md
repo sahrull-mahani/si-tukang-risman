@@ -16,7 +16,7 @@ composer require codeigniter4/framework:4.3.6 -W
 cp env .env
 ```
 
-4. edit file env *hilangkan tanda pagar #*
+4. edit file .env *hilangkan tanda pagar #*
     - `# CI_ENVIRONMENT = development` => `CI_ENVIRONMENT = development`
     - `# app.baseURL = 'http://localhost:8080/'` => `app.baseURL = 'http://localhost:8080/'`
     - `# database.default.hostname = localhost` => `database.default.hostname = localhost`
