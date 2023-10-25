@@ -26,7 +26,7 @@
                 <?= form_open('log-in', array('id' => 'form-login', 'class' => 'mode2')); ?>
                 <div class="mb-3 item">
                     <div class="input-group">
-                        <input type="email" class="form-control" name="identity" placeholder="<?= lang('Auth.login_identity_label') ?>" required />
+                        <input type="text" class="form-control" name="identity" placeholder="<?= lang('Auth.login_identity_label') ?>" required />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>

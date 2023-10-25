@@ -6,7 +6,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-5">
-          <h1 class="line-bottom">Perfection is always in our mind.</h1>
+          <h1 class="line-bottom">Kesempurnaan selalu ada dalam pikiran kami.</h1>
         </div>
         <div class="col-lg-5 ml-auto"></div>
       </div>
@@ -73,7 +73,7 @@
   <div class="container">
     <div class="row mb-5">
       <div class="col-md-4 mx-auto">
-        <h2 class="line-bottom text-center">Testimonials</h2>
+        <h2 class="line-bottom text-center">Testimoni</h2>
       </div>
     </div>
     <div class="row">
@@ -88,7 +88,7 @@
               </div>
               <div>
                 <span class="d-block"><?= ucwords($row->nama_user) ?></span>
-                <span class="position">Client</span>
+                <span class="position">Klaen</span>
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@
     <div class="row mb-4">
 
       <div class="col-md-4 mx-auto">
-        <h2 class="line-bottom text-center">Our Projects</h2>
+        <h2 class="line-bottom text-center">Proyek Kami</h2>
       </div>
 
     </div>
@@ -123,7 +123,7 @@
                 <span class="icon-plus"></span>
               </a>
 
-              <a href="#" class="project-title d-none"><span>Renovate the house</span></a>
+              <a href="#" class="project-title d-none"><span>Renovasi</span></a>
             </div>
 
           </div>
@@ -139,7 +139,7 @@
     <div class="row mb-4">
 
       <div class="col-md-4 mx-auto">
-        <h2 class="line-bottom text-center">Our Blog</h2>
+        <h2 class="line-bottom text-center">Berita Kami</h2>
       </div>
 
     </div>

@@ -1,7 +1,7 @@
 <?= $this->extend('web/_template/index') ?>
 <?= $this->section('page-content') ?>
 
-<div class="ftco-blocks-cover-1">
+<div class="ftco-blocks-cover-1" style="height: 200px; overflow: hidden;">
   <div class="ftco-cover-1 overlay innerpage" style="background-image: url(<?= base_url('assets_front/images/hero_2.jpg') ?>)">
     <div class="container">
       <div class="row align-items-center justify-content-center">

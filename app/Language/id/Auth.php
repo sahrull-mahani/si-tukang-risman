@@ -24,8 +24,8 @@ return [
 
 	// Login
 	'login_heading'         => 'Login',
-	'login_subheading'      => 'Silakan login dengan email/username dan password anda.',
-	'login_identity_label'  => 'Email/Username:',
+	'login_subheading'      => 'Silakan login dengan username dan password anda.',
+	'login_identity_label'  => 'Username:',
 	'login_password_label'  => 'Kata Sandi:',
 	'login_remember_label'  => 'Ingatkan Saya:',
 	'login_submit_btn'      => 'Login',

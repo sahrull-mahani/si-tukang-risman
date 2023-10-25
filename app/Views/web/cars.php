@@ -1,6 +1,6 @@
 <?= $this->extend('web/_template/index') ?>
 <?= $this->section('page-content') ?>
-<div class="ftco-blocks-cover-1">
+<div class="ftco-blocks-cover-1" style="height: 200px; overflow: hidden;">
   <div class="ftco-cover-1 overlay innerpage" style="background-image: url(<?= base_url('assets_front/images/hero_2.jpg') ?>)">
     <div class="container">
       <div class="row align-items-center justify-content-center">
@@ -58,7 +58,7 @@
                     <span class="icon-star-o text-warning"></span>
                   <?php endif ?>
                 </div>
-                <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>day</div>
+                <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>hari</div>
               </div>
               <ul class="specs">
                 <li>
@@ -76,6 +76,10 @@
                 <li>
                   <span>Telpon</span>
                   <span class="spec"><?= $row->telp ?></span>
+                </li>
+                <li>
+                  <span>Total Di Rental</span>
+                  <span class="spec"><?= "$row->totalcount x di rental" ?></span>
                 </li>
                 <li>
                   <span>Status</span>
@@ -123,7 +127,7 @@
                   <?php elseif($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
                     <a href="<?= $link ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
                   <?php else : ?>
-                    <a href="<?= $link ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rent Now</a>
+                    <a href="<?= $link ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
                   <?php endif ?>
                 </div>
               <?php endif ?>
@@ -173,7 +177,7 @@
               <tr>
                 <td>Tarif</td>
                 <td>
-                  <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>day</div>
+                  <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>hari</div>
                 </td>
               </tr>
               <tr>
@@ -185,8 +189,8 @@
                 <td><?= $row->created_at ?></td>
               </tr>
               <tr>
-                <td>Total Orderan</td>
-                <td><?= "$row->totalcount x orderan" ?></td>
+                <td>Total Di Rental</td>
+                <td><?= "$row->totalcount x di rental" ?></td>
               </tr>
               <tr>
                 <td>Telepon</td>

@@ -66,7 +66,7 @@ class Auth extends BaseController
                     $remember
                 )
             ) {
-                $user = $this->db->table('users')->where('email', $identity)->get()->getRow();
+                $user = $this->db->table('users')->where('username', $identity)->get()->getRow();
                 if (getGroup($user->id)->name == 'admin' || getGroup($user->id)->name == 'tukang') {
                     $href = '/home';
                 } else {

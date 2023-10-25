@@ -7,7 +7,7 @@ use App\Models\TukangM;
 
 class Orderan extends BaseController
 {
-    protected $orderanm;
+    protected $orderanm, $tukangm, $data, $session;
     function __construct()
     {
         $this->orderanm = new OrderanM();
@@ -154,10 +154,23 @@ class Orderan extends BaseController
         }
     }
 
+    public function pesanan($id)
+    {
+        $tukang = $this->tukangm->select('tukang.id, o.id as id_order, u.nama_user, u.phone')->join('orderan o', 'o.tukang_id = tukang.id')->join('users u', 'u.id = o.user_id')->find($id);
+        $data = ['title' => 'Orderan | Admin', 'breadcome' => "Pesanan $tukang->nama_user", 'url' => 'orderan/', 'm_orderan' => 'active', 'tukang' => $tukang];
+        return view('orderan/data-orderan', $data);
+    }
     public function konfir($id)
     {
-        $this->tukangm->update($id, ['status'=>2]);
+        $this->tukangm->update($id, ['status' => 2]);
         return redirect()->to('/home')->with('success', 'Berhasil dikonfirmasi');
+    }
+
+    public function tolak($id, $idtukang)
+    {
+        $this->tukangm->update($idtukang, ['status' => 0]);
+        $this->orderanm->delete($id);
+        return redirect()->to('/home')->with('success', 'Berhasil ditolak');
     }
 }
 

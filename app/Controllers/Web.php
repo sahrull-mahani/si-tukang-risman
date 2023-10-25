@@ -12,6 +12,7 @@ use App\Models\TukangM;
 
 class Web extends BaseController
 {
+    protected $tukangm, $orderanm, $galerim, $beritam, $bvm, $authm, $kategorim;
     public function __construct()
     {
         helper(['get_client_ip', 'hari_indo', 'auth_helper']);
@@ -92,7 +93,7 @@ class Web extends BaseController
             'tukang_id' => $idtukang,
         ];
         $this->orderanm->insert($data);
-        $this->tukangm->update($idtukang, ['status'=>1]);
+        $this->tukangm->update($idtukang, ['status' => 1]);
         return redirect()->to('/web/proyek');
     }
     public function selesai()
@@ -109,12 +110,12 @@ class Web extends BaseController
             'durasi'        => $this->request->getPost('durasi'),
         ];
         $this->orderanm->update($orderlast->id, $data);
-        if ($this->tukangm->update($idtukang, ['status'=>0])) {
+        if ($this->tukangm->update($idtukang, ['status' => 0])) {
             $status = [
                 'type' => 'success',
                 'message' => 'Data berhasil Terkirim'
             ];
-        }else{
+        } else {
             $status = [
                 'type' => 'error',
                 'message' => 'Data gagal Terkirim'
@@ -169,7 +170,7 @@ class Web extends BaseController
             'title'     => "orderan",
             'a_orderan' => 'active',
             'berita'    => $this->beritam->joinGaleri()->orderBy('id', 'desc')->first(),
-            'orderan'   => $this->orderanm->join('tukang t', 't.id = orderan.tukang_id')->where('orderan.user_id', session('user_id'))->where($notnull)->orderBy('orderan.id','desc')->findAll()
+            'orderan'   => $this->orderanm->join('tukang t', 't.id = orderan.tukang_id')->where('orderan.user_id', session('user_id'))->where($notnull)->orderBy('orderan.id', 'desc')->findAll()
         ];
         return view("App\Views\web\orderan", $data);
     }

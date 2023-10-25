@@ -32,7 +32,7 @@
                             <i class="fas fa-newspaper"></i>
                         </div>
                         <?php if (is_admin()) : ?>
-                            <a href="<?= site_url('berita'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="<?= site_url('berita'); ?>" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
                         <?php endif ?>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <?php if (is_admin()) : ?>
-                            <a href="<?= site_url('tukang') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="<?= site_url('tukang') ?>" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
                         <?php endif ?>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                             <i class="fas fa-bullhorn"></i>
                         </div>
                         <?php if (is_admin()) : ?>
-                            <a href="<?= site_url('users'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="<?= site_url('users'); ?>" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
                         <?php endif ?>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                             <i class="fas fa-tree"></i>
                         </div>
                         <?php if (is_admin()) : ?>
-                            <a href="<?= site_url('kategori'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="<?= site_url('kategori'); ?>" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
                         <?php endif ?>
                     </div>
                 </div>

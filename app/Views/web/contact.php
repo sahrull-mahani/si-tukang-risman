@@ -1,13 +1,13 @@
 <?= $this->extend('web/_template/index') ?>
 <?= $this->section('page-content') ?>
 
-<div class="ftco-blocks-cover-1">
+<div class="ftco-blocks-cover-1" style="height: 200px; overflow: hidden;">
   <div class="ftco-cover-1 overlay innerpage" style="background-image: url('images/hero_2.jpg')">
     <div class="container">
       <div class="row align-items-center justify-content-center">
         <div class="col-lg-6 text-center">
-          <h1>Contact Us</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <!-- <h1>Contact Us</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> -->
         </div>
       </div>
     </div>
@@ -20,8 +20,8 @@
   <div class="container">
     <div class="row justify-content-center text-center">
       <div class="col-7 text-center mb-5">
-        <h2>Contact Us</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo assumenda, dolorum necessitatibus eius earum voluptates sed!</p>
+        <h2>Hubungi Kami</h2>
+        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo assumenda, dolorum necessitatibus eius earum voluptates sed!</p> -->
       </div>
     </div>
     <div class="row">

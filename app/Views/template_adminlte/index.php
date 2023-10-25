@@ -81,7 +81,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Navbar Search -->
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>
                     </a>
@@ -114,8 +114,6 @@
                 <?php endif ?>
 
                 <!-- Notifications Dropdown Menu -->
-                <?php //d(getNotifikasiOrderan(session('user_id'))) 
-                ?>
                 <?php if (session('userlevel') == 'tukang') : ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -123,18 +121,18 @@
                             <span class="badge badge-info navbar-badge"><?= count(getNotifikasiOrderan(session('user_id'))) ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-item dropdown-header"><?= count(getNotifikasiOrderan(session('user_id'))) ?> New Order</span>
+                            <span class="dropdown-item dropdown-header"><?= count(getNotifikasiOrderan(session('user_id'))) ?> Pesanan Baru</span>
                             <div class="dropdown-divider"></div>
                             <?php foreach (getNotifikasiOrderan(session('user_id')) as $row) : ?>
-                                <a href="/orderan/konfir/<?= $row->t_id ?>" class="dropdown-item">
+                                <a href="<?= site_url("orderan/pesanan/$row->t_id") ?>" class="dropdown-item">
                                     <i class="fas fa-envelope mr-2"></i> <?= ucwords($row->nama_user) ?>
                                     <span class="float-right text-muted text-sm"><?= getDiffrenTime(date('Y-m-d', strtotime($row->updated_at)), date('Y-m-d')) ?> Hari Yg Lalu</span>
                                 </a>
                             <?php endforeach ?>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                            <!-- <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a> -->
                         </div>
-                    </li>
+                    </li> 
                 <?php endif ?>
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">

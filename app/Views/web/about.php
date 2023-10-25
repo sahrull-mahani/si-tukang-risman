@@ -1,12 +1,12 @@
 <?= $this->extend('web/_template/index') ?>
 <?= $this->section('page-content') ?>
 
-<div class="ftco-blocks-cover-1">
+<div class="ftco-blocks-cover-1" style="height: 200px; overflow: hidden;">
   <div class="ftco-cover-1 overlay" style="background-image: url( <?= base_url('assets_front/images/hero_1.jpg') ?>)">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-5">
-          <h1 class="line-bottom">Perfection is always in our mind.</h1>
+          <!-- <h1 class="line-bottom">Perfection is always in our mind.</h1> -->
         </div>
         <div class="col-lg-5 ml-auto"></div>
       </div>

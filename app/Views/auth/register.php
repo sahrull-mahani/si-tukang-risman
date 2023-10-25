@@ -62,15 +62,17 @@
             </div>
           </div>
         </div>
-        <?php if ($identity_column !== 'email') { ?>
-          <div class="form-group row mode2">
-            <?= form_label(lang('Auth.create_user_identity_label'), 'identity', array("class" => "col-sm-3 col-form-label")); ?>
-            <div class="col-sm-9 item">
-              <input type="text" name="identity" value="<?= $user->username ?>" id="identity" class="form-control" required="required" />
+        <?php if ($identity_column !== 'email') : ?>
+          <div class="input-group mb-3">
+            <input type="text" name="identity" id="identity" class="form-control" placeholder="Username" required="required" />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fa fa-at"></span>
+              </div>
             </div>
             <?= '<p>' . \Config\Services::validation()->getError('identity') . '</p>'; ?>
           </div>
-        <?php } ?>
+        <?php endif ?>
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
           <div class="input-group-append">
