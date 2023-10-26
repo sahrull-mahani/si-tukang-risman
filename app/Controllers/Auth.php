@@ -194,9 +194,9 @@ class Auth extends BaseController
                         lang('Auth.create_user_validation_identity_label'),
                         'trim|required|is_unique[' . $tables['users'] . '.' . $identityColumn . ']'
                     );
-                    $this->validation->setRule('email', lang('Auth.create_user_validation_email_label'), 'trim|required|valid_email');
+                    // $this->validation->setRule('email', lang('Auth.create_user_validation_email_label'), 'trim|required|valid_email');
                 } else {
-                    $this->validation->setRule('email', lang('Auth.create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
+                    // $this->validation->setRule('email', lang('Auth.create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
                     // $this->validation->setRule('email',lang('Auth.create_user_validation_email_label'),'trim|required|is_unique[' .$tables['users'] .'.email]');
                 }
                 $this->validation->setRule(
