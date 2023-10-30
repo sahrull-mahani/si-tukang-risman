@@ -456,6 +456,23 @@ function readFile(url) {
             }
         });
     })
+    $('.btn-ask').on('click', function (e) {
+        e.preventDefault()
+        Swal.fire({
+            title: $(this).data('title'),
+            text: $(this).data('message'),
+            icon: $(this).data('icon'),
+            confirmButtonText: 'Yakin!',
+            confirmButtonColor: '#ff0000',
+            showCancelButton: true,
+            cancelButtonColor: '#333333',
+            cancelButtonText:'Tidak Yakin',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = $(this).attr('href')
+            }
+        })
+    })
     $("#proses-presensi").click(function () {
         var bulan = $("#bulan").val();
         if (bulan == '') {

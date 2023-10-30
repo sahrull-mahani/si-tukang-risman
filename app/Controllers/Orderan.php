@@ -31,8 +31,11 @@ class Orderan extends BaseController
             $row['nomor'] = $no++;
             $row['user_id'] = $rows->nama_user;
             $row['tukang_id'] = $rows->nama;
+            $row['lokasi'] = $rows->lokasi;
+            $row['tugas'] = substr($rows->tugas, 0, 50) . '...';
+            $row['jenis_kerja'] = $rows->jenis_kerja;
             $row['keterangan'] = $rows->keterangan;
-            $row['rating'] = "$rows->rating Bintang";
+            $row['rating'] = $rows->rating != null ? "$rows->rating Bintang" : '-';
             $row['durasi'] = $rows->durasi;
             $data[] = $row;
         }
@@ -154,22 +157,23 @@ class Orderan extends BaseController
         }
     }
 
-    public function pesanan($id)
+    public function pesanan($idorder)
     {
-        $tukang = $this->tukangm->select('tukang.id, o.id as id_order, u.nama_user, u.phone')->join('orderan o', 'o.tukang_id = tukang.id')->join('users u', 'u.id = o.user_id')->find($id);
+        $tukang = $this->tukangm->select('tukang.id, o.id as id_order, o.lokasi, o.tugas, o.jenis_kerja, u.nama_user, u.phone')->join('orderan o', 'o.tukang_id = tukang.id')->join('users u', 'u.id = o.user_id')->where('o.id', $idorder)->first();
         $data = ['title' => 'Orderan | Admin', 'breadcome' => "Pesanan $tukang->nama_user", 'url' => 'orderan/', 'm_orderan' => 'active', 'tukang' => $tukang];
         return view('orderan/data-orderan', $data);
     }
-    public function konfir($id)
+    public function konfir($idorder)
     {
-        $this->tukangm->update($id, ['status' => 2]);
+        $oderan = $this->orderanm->find($idorder);
+        $this->tukangm->update($oderan->tukang_id, ['status' => 2]);
         return redirect()->to('/home')->with('success', 'Berhasil dikonfirmasi');
     }
 
-    public function tolak($id, $idtukang)
+    public function tolak($idorder, $idtukang)
     {
         $this->tukangm->update($idtukang, ['status' => 0]);
-        $this->orderanm->delete($id);
+        $this->orderanm->delete($idorder);
         return redirect()->to('/home')->with('success', 'Berhasil ditolak');
     }
 }

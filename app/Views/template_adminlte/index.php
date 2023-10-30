@@ -124,7 +124,7 @@
                             <span class="dropdown-item dropdown-header"><?= count(getNotifikasiOrderan(session('user_id'))) ?> Pesanan Baru</span>
                             <div class="dropdown-divider"></div>
                             <?php foreach (getNotifikasiOrderan(session('user_id')) as $row) : ?>
-                                <a href="<?= site_url("orderan/pesanan/$row->t_id") ?>" class="dropdown-item">
+                                <a href="<?= site_url("orderan/pesanan/$row->id") ?>" class="dropdown-item">
                                     <i class="fas fa-envelope mr-2"></i> <?= ucwords($row->nama_user) ?>
                                     <span class="float-right text-muted text-sm"><?= getDiffrenTime(date('Y-m-d', strtotime($row->updated_at)), date('Y-m-d')) ?> Hari Yg Lalu</span>
                                 </a>

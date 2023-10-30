@@ -1,27 +1,62 @@
 $('.rent').on('click', function (e) {
   e.preventDefault()
   let href = $(this).attr('href')
+  let login = $(this).data('login')
+  let idtukang = $(this).data('idtukang')
+  let status = $(this).parent().prev().find('li:contains("Status"):last').children('span.spec')
+  if (login == 'not-login') {
+    return location.href = location.origin + href
+  }
   Swal.fire({
     title: 'Anda yakin?',
-    text: 'Pastikan anda sudah login terlebih dahulu, jika sudah anda bisa langsung rental tukang yang dipilih',
     icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Ya',
+    html: `<input type="text" id="lokasi" class="swal2-input" placeholder="Lokasi">
+    <textarea id="tugas" class="swal2-input" placeholder="Deskripsi pekerjaan..."></textarea>
+    <select id="jenis_kerja" class="swal2-input" style="width: 60%;">
+      <option value="harian" selected>Harian</option>
+      <option value="borongan">Borongan</option>
+    </select>`,
+    confirmButtonText: 'Rental',
+    focusConfirm: false,
+    preConfirm: () => {
+      const lokasi = Swal.getPopup().querySelector('#lokasi').value
+      const tugas = Swal.getPopup().querySelector('#tugas').value
+      const jenis_kerja = Swal.getPopup().querySelector('#jenis_kerja').value
+      if (!lokasi || !tugas || !jenis_kerja) {
+        Swal.showValidationMessage(`Data tidak boleh kosong!`)
+      }
+      let value
+      $.post({
+        url: location.origin + '/web/rental',
+        data: { idtukang, lokasi, tugas, jenis_kerja },
+        dataType: 'json',
+        async: false,
+        success: function (val) {
+          return value = val
+        }
+      })
+      return value
+    }
   }).then((result) => {
-    /* Read more about isConfirmed, isDenied below */
+    Swal.fire({
+      title: result.value.title,
+      text: result.value.text,
+      icon: result.value.type
+    })
     if (result.isConfirmed) {
-      location.href = location.origin + href
+      $(this).toggleClass('rent').toggleClass('disabled').text('Konfirmasi Tukang 1x24 Jam')
+      status.addClass('font-weight-bold text-primary').text('Sementara Dirental')
     }
   })
 })
 
-$('.form-done').on('submit', function(e) {
+$('.form-done').on('submit', function (e) {
   e.preventDefault()
   $.ajax({
     url: location.origin + $(this).attr('action'),
     type: 'POST',
     data: $(this).serialize(),
-    success: function(res) {
+    success: function (res) {
       let data = $.parseJSON(res)
       Swal.fire({
         title: data.type,

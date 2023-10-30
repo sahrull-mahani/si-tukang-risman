@@ -50,13 +50,25 @@
                                         <td>Nomor Telepon</td>
                                         <td><?= $tukang->phone ?></td>
                                     </tr>
+                                    <tr>
+                                        <td>Lokasi</td>
+                                        <td><?= $tukang->lokasi ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tugas</td>
+                                        <td><?= $tukang->tugas ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis Kerja</td>
+                                        <td><?= $tukang->jenis_kerja ?></td>
+                                    </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex flex-row-reverse">
                                 <div class="btn-group mt-4">
-                                    <a href="<?= site_url("orderan/tolak/$tukang->id_order/$tukang->id") ?>" class="btn btn-danger">Tolak</a>
-                                    <a href="<?= site_url("orderan/konfir/$tukang->id") ?>" class="btn btn-primary">Terima</a>
+                                    <a href="<?= site_url("orderan/tolak/$tukang->id_order/$tukang->id") ?>" class="btn btn-danger btn-ask" data-title="Anda yakin?" data-message="Anda ingin menolak pekerjaan ini?" data-icon="warning">Tolak</a>
+                                    <a href="<?= site_url("orderan/konfir/$tukang->id_order") ?>" class="btn btn-primary btn-ask" data-title="Anda yakin?" data-message="Anda akan menerima pekerjaan?, Jika anda yakin maka tekan tombol yakin dan jika tidak tekan tombol tidak yakin" data-icon="question">Terima</a>
                                 </div>
                             </div>
                         </div>

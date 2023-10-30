@@ -90,8 +90,10 @@
 
               if (logged_in()) {
                 $link = "/web/rental/$row->id";
+                $login = 'login';
               } else {
                 $link = '/login';
+                $login = 'not-login';
               }
 
               ?>
@@ -125,9 +127,9 @@
                       </div>
                     </form>
                   <?php elseif($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
-                    <a href="<?= $link ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
+                    <a href="<?= $link ?>" data-login="<?= $login ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
                   <?php else : ?>
-                    <a href="<?= $link ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                    <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
                   <?php endif ?>
                 </div>
               <?php endif ?>

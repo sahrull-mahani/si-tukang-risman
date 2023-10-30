@@ -7,9 +7,9 @@ use CodeIgniter\Model;
 class OrderanM extends Model
 {
     protected $table = 'orderan';
-    protected $allowedFields = array('user_id', 'tukang_id', 'status', 'keterangan', 'rating', 'durasi');
+    protected $allowedFields = array('user_id', 'tukang_id', 'lokasi', 'tugas', 'jenis_kerja', 'status', 'keterangan', 'rating', 'durasi');
     protected $returnType     = 'object';
-    protected $useSoftDeletes = false;
+    protected $useSoftDeletes = true;
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
@@ -19,6 +19,9 @@ class OrderanM extends Model
     protected $validationRules = [
         'user_id' => 'required|max_length[20]',
         'tukang_id' => 'required|max_length[20]',
+        'lokasi' => 'required|max_length[200]',
+        'tugas' => 'required|max_length[200]',
+        'jenis_kerja' => 'required',
         'status' => 'max_length[20]',
         'keterangan' => 'max_length[65535]',
         'rating' => 'max_length[100]',
@@ -26,8 +29,11 @@ class OrderanM extends Model
     ];
 
     protected $validationMessages = [
-        'user_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal  Karakter'],
-        'tukang_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal  Karakter'],
+        'user_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 20 Karakter'],
+        'tukang_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 20 Karakter'],
+        'lokasi' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
+        'tugas' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
+        'jenis_kerja' => ['required' => 'tidak boleh kosong'],
         'status' => ['max_length' => 'Maximal  Karakter'],
         'keterangan' => ['max_length' => 'Maximal 65535 Karakter'],
         'rating' => ['max_length' => 'Maximal  Karakter'],
@@ -35,7 +41,7 @@ class OrderanM extends Model
     ];
     private function _get_datatables()
     {
-        $column_search = array('user_id', 'tukang_id', 'status', 'keterangan', 'rating', 'durasi');
+        $column_search = array('user_id', 'tukang_id', 'lokasi', 'tugas', 'jenis_kerja', 'status', 'keterangan', 'rating', 'durasi');
         $i = 0;
         foreach ($column_search as $item) { // loop column 
             if ($_GET['search']) {

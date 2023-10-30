@@ -86,15 +86,26 @@ class Web extends BaseController
         ];
         return view("App\Views\web\cars", $data);
     }
-    public function rental($idtukang)
+    public function rental()
     {
+        $idtukang = $this->request->getPost('idtukang');
+        $lokasi = $this->request->getPost('lokasi');
+        $tugas = $this->request->getPost('tugas');
+        $jenis_kerja = $this->request->getPost('jenis_kerja');
         $data = [
             'user_id'   => session('user_id'),
             'tukang_id' => $idtukang,
+            'lokasi' => $lokasi,
+            'tugas' => $tugas,
+            'jenis_kerja' => $jenis_kerja,
         ];
         $this->orderanm->insert($data);
         $this->tukangm->update($idtukang, ['status' => 1]);
-        return redirect()->to('/web/proyek');
+        $status['title'] = 'Berhasil';
+        $status['type'] = 'success';
+        $status['text'] = 'Berhasil dirental, tunggu konfirmasi tukang';
+        return json_encode($status);
+        // return redirect()->to('/web/proyek');
     }
     public function selesai()
     {

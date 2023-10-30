@@ -45,6 +45,9 @@
                                         <th data-field="nomor">No</th>
                                         <th data-field="user_id">Nama Penyewa</th>
                                         <th data-field="tukang_id">Nama Tukang</th>
+                                        <th data-field="lokasi">Lokasi</th>
+                                        <th data-field="tugas">Tugas</th>
+                                        <th data-field="jenis_kerja">Jenis Kerja</th>
                                         <th data-field="keterangan">Keterangan</th>
                                         <th data-field="rating">Rating</th>
                                         <th data-field="durasi">Durasi</th>
