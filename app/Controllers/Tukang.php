@@ -8,7 +8,7 @@ use App\Models\TukangM;
 
 class Tukang extends BaseController
 {
-    protected $tukangm;
+    protected $tukangm, $galerim, $kategorim, $db, $data, $session;
     function __construct()
     {
         $this->tukangm = new TukangM();
@@ -26,7 +26,7 @@ class Tukang extends BaseController
     {
         $get = $this->tukangm->find($id);
         $kategori = $this->kategorim->findAll();
-        $this->data = array('title' => 'Profil Tukang', 'breadcome' => 'Profil Tukang', 'url' => 'tukang/', 'm_tukang' => 'active', 'get' => $get, 'kategori'=>$kategori);
+        $this->data = array('title' => 'Profil Tukang', 'breadcome' => 'Profil Tukang', 'url' => 'tukang/', 'm_tukang' => 'active', 'get' => $get, 'kategori' => $kategori);
 
         echo view('App\Views\tukang\post-tukang', $this->data);
     }
@@ -46,8 +46,8 @@ class Tukang extends BaseController
             $row['alamat'] = $rows->alamat;
             $row['kategori'] = getKategori($rows->id);
             $row['telp'] = $rows->telp;
-            $row['foto'] = '<img src="'. ($rows->foto == 'profile.png' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$rows->foto")) .'" width="250"';
-            $row['foto_ktp'] = '<img src="'. ($rows->foto_ktp != null ? base_url("Berita/img_thumb/$rows->foto_ktp") : '/admin_assets/img/profile.png') .'" width="250"';
+            $row['foto'] = '<img src="' . ($rows->foto == 'profile.png' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$rows->foto")) . '" width="250"';
+            $row['foto_ktp'] = '<img src="' . ($rows->foto_ktp != null ? base_url("Berita/img_thumb/$rows->foto_ktp") : '/admin_assets/img/profile.png') . '" width="250"';
             $data[] = $row;
         }
         $output = array(
@@ -76,7 +76,7 @@ class Tukang extends BaseController
         $get = $this->tukangm->find($id);
         $kategori = $this->kategorim->findAll();
         $galeri = $this->galerim->galeriLikeWhere("project_$get->nama", $id)->findAll();
-        $this->data = array('get' => $get, 'kategori'=>$kategori, 'action' => 'update', 'btn' => '<i class="fas fa-edit"></i> Edit', 'nama' => '<b>' . $get->nama . '</b>');
+        $this->data = array('get' => $get, 'kategori' => $kategori, 'action' => 'update', 'btn' => '<i class="fas fa-edit"></i> Edit', 'nama' => '<b>' . $get->nama . '</b>');
         $this->data['form_input'][] = view('App\Views\tukang\form_input', $this->data);
         $status['html']         = view('App\Views\tukang\form_modal', $this->data);
         $status['modal_title']  = '<b>Update Data Tukang: </b>' . ucwords($get->nama);
@@ -190,13 +190,13 @@ class Tukang extends BaseController
                         }
                         $this->db->table('kategori_group')->insertBatch($dataKategori);
                     }
-                    $this->db->table('users')->where('id', $datatukang->user_id)->set(['nama_user'=>$nama, 'img'=>$foto_name ?? ($datatukang->foto != 'profile.png' ? $datatukang->foto : 'profile.png'), 'phone'=>$telp])->update();
+                    $this->db->table('users')->where('id', $datatukang->user_id)->set(['nama_user' => $nama, 'img' => $foto_name ?? ($datatukang->foto != 'profile.png' ? $datatukang->foto : 'profile.png'), 'phone' => $telp])->update();
                     if (!is_admin()) {
                         $this->session->remove('nama_user');
                         $this->session->set('nama_user', $nama);
                         if ($foto->getError() !== 4) {
                             $this->session->remove('foto');
-                            $this->session->set('foto', base_url('Berita/img_thumb/'.$foto_name));
+                            $this->session->set('foto', base_url('Berita/img_thumb/' . $foto_name));
                         }
                     }
 
@@ -216,7 +216,7 @@ class Tukang extends BaseController
                             }
                             $this->galerim->where('id_sumber', $id)->delete(); // delete dari database
                         }
-    
+
                         // menambahkan foto project ke galeri
                         foreach ($project as $pic) {
                             $project_name = "project_$nama" . '_' . $pic->getRandomName();
@@ -276,12 +276,14 @@ class Tukang extends BaseController
             return false;
         }
         $filepath = WRITEPATH . 'uploads/';
-        // $file_old = $this->request->getPost('old_file');
-        // if (!empty($file_old)) {
-        //     delete_files($filepath . 'img/', $file_old); //Hapus terlebih dahulu jika file ada
-        //     delete_files($filepath . 'thumbs/', $file_old); //Hapus terlebih dahulu jika file ada
-        // }
+
         if ($img->isValid() && !$img->hasMoved()) {
+            if (!is_dir("$filepath/img")) {
+                mkdir("$filepath/img");
+            }
+            if (!is_dir("$filepath/thumbs")) {
+                mkdir("$filepath/thumbs");
+            }
             $image = \Config\Services::image('gd'); //Load Image Libray
             $image->withFile($img)->save($filepath . 'img/' . $file_name);
             //thumbs

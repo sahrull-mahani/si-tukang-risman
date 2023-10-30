@@ -66,13 +66,13 @@
                                 <input type="text" class="form-control" id="telp" name="telp" placeholder="telp" value="<?= @$get->telp ?>" required />
                             </div>
                             <label for="foto">Foto</label>
-                            <input class="input-id" type="file" data-urlimage="<?= $get->foto == 'profile.png' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto") ?>" name="foto" accept=".jpg, .png, image/jpeg, image/png">
+                            <input class="input-id" type="file" data-urlimage="<?= $get->foto == 'profile.png' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto") ?>" data-required="false" name="foto" accept=".jpg, .png, image/jpeg, image/png">
                             <br>
                             <label for="fotoproject">Foto KTP</label>
-                            <input class="input-id ktp" type="file" data-urlimage="<?= $get->foto_ktp == '' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto_ktp") ?>" name="ktp" accept=".jpg, .png, image/jpeg, image/png">
+                            <input class="input-id ktp" type="file" data-urlimage="<?= $get->foto_ktp == '' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto_ktp") ?>" data-required="false" name="ktp" accept=".jpg, .png, image/jpeg, image/png">
                             <br>
                             <label for="fotoproject">Foto Project</label>
-                            <input class="input-id project" type="file" name="fotoproject[]" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                            <input class="input-id project" type="file" name="fotoproject[]" data-required="false" accept=".jpg, .png, image/jpeg, image/png" multiple>
                         </div>
                         <div class="card-footer">
                             <input type="hidden" id="id" name="id" value="<?= @$get->id ?>">

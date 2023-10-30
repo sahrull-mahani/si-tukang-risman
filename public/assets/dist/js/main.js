@@ -466,7 +466,7 @@ function readFile(url) {
             confirmButtonColor: '#ff0000',
             showCancelButton: true,
             cancelButtonColor: '#333333',
-            cancelButtonText:'Tidak Yakin',
+            cancelButtonText: 'Tidak Yakin',
         }).then((result) => {
             if (result.isConfirmed) {
                 location.href = $(this).attr('href')
@@ -574,15 +574,15 @@ function readFile(url) {
                 processData: false,
                 contentType: false,
                 cache: false,
-                async: false,
                 success: function (response) {
                     var data = $.parseJSON(response);
                     if (data.type == "success") {
                         Swal.fire({ title: data.title, html: data.text, icon: data.type }).then((result) => {
-                            if (result.isConfirmed)
+                            if (result.isConfirmed) {
                                 $('.btn-sub').toggleClass('d-none')
-                            $('.btn-load').toggleClass('d-none')
-                            window.location.replace(location.origin + `/${data.redirect}`)
+                                $('.btn-load').toggleClass('d-none')
+                                window.location.replace(location.origin + `/${data.redirect}`)
+                            }
                         })
                     } else {
                         $('.btn-sub').toggleClass('d-none')

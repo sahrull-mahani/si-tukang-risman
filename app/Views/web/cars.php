@@ -126,12 +126,14 @@
                         </div>
                       </div>
                     </form>
-                  <?php elseif($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
+                  <?php elseif ($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
                     <a href="<?= $link ?>" data-login="<?= $login ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
                   <?php else : ?>
                     <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
                   <?php endif ?>
                 </div>
+              <?php else : ?>
+                <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
               <?php endif ?>
             </div>
           </div>
