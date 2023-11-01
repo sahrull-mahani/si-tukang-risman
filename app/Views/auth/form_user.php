@@ -8,7 +8,7 @@
     </div>
     <?php if ($identity_column !== 'email') { ?>
         <div class="form-group row mode2">
-            <?= form_label(lang('Auth.create_user_identity_label'), 'identity', array("class" => "col-sm-3 col-form-label")); ?>
+            <label for="identity" class="col-sm-3 col-form-label">Identitas:</label>
             <div class="col-sm-9 item">
                 <input type="text" name="identity" value="<?= isset($user->username)  && $action == 'update' ? $user->username : ''; ?>" id="identity" class="form-control" required="required" />
             </div>
@@ -16,7 +16,7 @@
         </div>
     <?php } ?>
     <div class="form-group row mode2">
-        <?php echo form_label(lang('Auth.create_user_email_label'), 'email', array("class" => "col-sm-3 col-form-label")); ?>
+        <label for="identity" class="col-sm-3 col-form-label">Surel:</label>
         <div class="col-sm-9 item">
             <input type="text" name="email" value="<?= isset($user->email) && $action == 'update' ? $user->email : ''; ?>" id="email" class="form-control" required="required" />
         </div>
@@ -30,28 +30,30 @@
     <div class="form-group row mode2">
         <label for="jenis_user" class="col-sm-3 col-form-label">Jenis User **</label>
         <div class="col-sm-9 item">
-            <?php //if ($action == 'update') : ?>
+            <?php //if ($action == 'update') : 
+            ?>
             <?php $no = 1;
-                foreach ($groups as $group) :
-                    $gID = $group->id;
-                    $checked = null;
-                    foreach ($currentGroups as $grp) {
-                        if ($action == 'update') {
-                            if ($gID == $grp->id) {
-                                $checked = ' checked="checked"';
-                                break;
-                            }
+            foreach ($groups as $group) :
+                $gID = $group->id;
+                $checked = null;
+                foreach ($currentGroups as $grp) {
+                    if ($action == 'update') {
+                        if ($gID == $grp->id) {
+                            $checked = ' checked="checked"';
+                            break;
                         }
-                    } ?>
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="radio" name="groups[]" value="<?= $group->id; ?>" <?= $checked; ?> id="customCheckbox<?= $no; ?>" />
-                        <label for="customCheckbox<?= $no; ?>" class="custom-control-label"><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8'); ?></label>
-                    </div>
-                <?php $no++;
-                endforeach; ?>
-                <?php //endif ?>
-            </div>
+                    }
+                } ?>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="radio" name="groups[]" value="<?= $group->id; ?>" <?= $checked; ?> id="customCheckbox<?= $no; ?>" />
+                    <label for="customCheckbox<?= $no; ?>" class="custom-control-label"><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8'); ?></label>
+                </div>
+            <?php $no++;
+            endforeach; ?>
+            <?php //endif 
+            ?>
         </div>
+    </div>
     <div class="form-group row mode2">
         <?php echo form_label(lang('Auth.create_user_password_label'), 'password', array("class" => "col-sm-3 col-form-label")); ?>
         <div class="col-sm-9 item">
