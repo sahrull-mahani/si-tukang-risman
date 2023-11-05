@@ -150,7 +150,8 @@ class IonAuthModel
 		$this->db->table($this->tables['users'])->update($data, [$this->identityColumn => $identity]);
 		return $this->db->affectedRows() === 1;
 	}
-	public function forgottenPassword(string $identity)
+	// public function forgottenPassword(string $identity)
+	public function fPass(string $identity)
 	{
 		if (empty($identity)) {
 			return false;
@@ -437,7 +438,7 @@ class IonAuthModel
 	{
 		// Retrieve the token object from the code
 		$token = $this->retrieveSelectorValidatorCouple($userCode);
-
+		
 		// Retrieve the user according to this selector
 		$builder = $this->db->table($this->tables['users'])->where('forgotten_password_selector', $token->selector)->get()->getRow();
 		if ($builder) {

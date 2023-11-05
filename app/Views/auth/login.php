@@ -54,6 +54,7 @@
                     </div>
                     <div class="col-12 mt-2">
                         <a href="/" class="btn btn-xs btn-secondary btn-block">Home</a>
+                        <a href="/forgot-password" class="btn btn-xs btn-outline-secondary btn-block">Lupas password</a>
                     </div>
                 </div>
                 </form>

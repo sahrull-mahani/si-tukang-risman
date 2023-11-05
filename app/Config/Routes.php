@@ -61,9 +61,10 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     // Forgot/Resets
     $routes->get('forgot-password', 'Auth::forgot_password');
     $routes->post('forgot_password', 'Auth::forgot_password');
-    $routes->get('reset-password/:num', 'Auth::reset_password/$1', [
-        'as' => 'reset-password',
-    ]);
+    $routes->post('forgot_password/(:segment)', 'Auth::reset_password/$1');
+    // $routes->get('reset-password/(:segment)', 'Auth::reset_password/$1', [
+    //     'as' => 'reset-password',
+    // ]);
     $routes->get('profile', 'Auth::profile');
     
 });

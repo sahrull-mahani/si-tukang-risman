@@ -22,22 +22,27 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg"><?= sprintf(lang('Auth.forgot_password_subheading'), $identity_label); ?>
-                <br> <?= $message; ?></p>
+                    <br> <?= $message; ?>
+                </p>
                 <?= form_open('forgot_password'); ?>
-                    <div class="input-group mb-3">
-                        <input type="<?= (($type === 'email') ? 'email' : 'text'); ?>"  name="identity" id="identity" class="form-control" placeholder="<?= (($type === 'email') ? sprintf(lang('Auth.forgot_password_email_label'), $identity_label) : sprintf(lang('Auth.forgot_password_identity_label'), $identity_label)); ?>" required />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
+                <div class="input-group mb-3">
+                    <input type="<?= (($type === 'email') ? 'email' : 'text'); ?>" name="identity" id="identity" class="form-control" placeholder="<?= (($type === 'email') ? sprintf(lang('Auth.forgot_password_email_label'), $identity_label) : sprintf(lang('Auth.forgot_password_identity_label'), $identity_label)); ?>" required />
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
-                        </div>
-                        <!-- /.col -->
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-block d-none" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-block" id="submit">Request new password</button>
                     </div>
+                    <!-- /.col -->
+                </div>
                 </form>
                 <p class="mt-3 mb-1">
                     <a href="<?= site_url('login'); ?>">Login</a>
@@ -65,6 +70,8 @@
             if (!validator.checkAll($(this))) {
                 false;
             } else {
+                $('#submit').prev().toggleClass('d-none')
+                $('#submit').toggleClass('d-none')
                 $.ajax({
                     url: $(this).attr("action"),
                     type: 'post',
@@ -98,6 +105,8 @@
                             html: data.text
                         }).then((result) => {
                             if (data.type == 'success') {
+                                $('#submit').prev().toggleClass('d-none')
+                                $('#submit').toggleClass('d-none')
                                 window.location.replace('<?= site_url('login') ?>');
                             }
                         });
@@ -116,4 +125,5 @@
         });
     </script>
 </body>
+
 </html>

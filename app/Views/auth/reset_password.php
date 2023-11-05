@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg"><?= lang('Auth.reset_password_heading'); ?> <br> <?= $message; ?> </p>
-                <?= form_open('reset_password/' . $code, array("class" => "mode2")); ?>
+                <?= form_open('auth/reset_password/' . $code, array("class" => "mode2")); ?>
                 <div class="input-group mb-3">
                     <input type="password" name="new" id='new' class="form-control" placeholder="<?= sprintf(lang('Auth.reset_password_new_password_label'), $minPasswordLength) ?> " required="required" data-validate-length-range="8,15">
                     <div class="input-group-append">

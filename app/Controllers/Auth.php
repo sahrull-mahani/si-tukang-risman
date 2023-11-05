@@ -2,20 +2,23 @@
 
 namespace App\Controllers;
 
+use App\Models\IonAuthModel;
 use App\Models\KategoriM;
 use App\Models\TukangM;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Auth extends BaseController
 {
     public $data = [];
-    protected $configIonAuth;
-    protected $validation;
+    protected $configIonAuth, $ionAuth, $tukangm, $kategorim, $db;
+    protected $validation, $session, $validationListTemplate;
     public function __construct()
     {
         $this->validation = \Config\Services::validation();
         $this->configIonAuth = config('IonAuth');
         $this->tukangm = new TukangM();
         $this->kategorim = new KategoriM();
+        $this->ionAuth = new IonAuthModel();
         $this->db = db_connect();
     }
     public function index()
@@ -677,8 +680,9 @@ class Auth extends BaseController
             return view('auth\forgot_password', $this->data);
         } else {
             $identity = $this->ionAuth
-                ->getUserFromIdentity($this->request->getPost('identity'))
+                ->getUserFromIdentity((string)$this->request->getPost('identity'))
                 ->limit(1)
+                ->select('id,username,email')
                 ->get()
                 ->getRow();
             if (empty($identity)) {
@@ -700,10 +704,16 @@ class Auth extends BaseController
                 return false;
             }
             // run the forgotten password method to email an activation code to the user
-            $forgotten = $this->ionAuth->forgottenPassword(
+            $forgotten = $this->ionAuth->fPass(
                 $identity->{$this->configIonAuth->identity}
             );
             if ($forgotten) {
+                if (!$this->resetPhpMailer($identity->id)) {
+                    $status['type'] = 'success';
+                    $status['text'] = session()->getFlashdata('error');
+                    $status['title'] = 'Success';
+                    return json_encode($status);
+                }
                 $status['type'] = 'success';
                 $status['text'] = $this->ionAuth->messages();
                 $status['title'] = 'Success';
@@ -723,10 +733,10 @@ class Auth extends BaseController
             $this->session->setFlashdata('message', 'code is empty');
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
-
+        
         $this->data['title'] = lang('Auth.reset_password_heading');
-
-        $user = $this->ionAuth->forgottenPasswordCheck($code);
+        
+        $user = db_connect()->table('users')->where('forgotten_password_code', $code)->get()->getRow();
 
         if ($user) {
             // if the code is valid then display the password reset form
@@ -770,7 +780,7 @@ class Auth extends BaseController
                     // finally change the password
                     $change = $this->ionAuth->resetPassword(
                         $identity,
-                        $this->request->getPost('new')
+                        (string)$this->request->getPost('new')
                     );
                     if ($change) {
                         $status['type'] = 'success';
@@ -1009,5 +1019,51 @@ class Auth extends BaseController
             return redirect()->to('auth');
         }
         return redirect()->to('admin');
+    }
+    public function resetPhpMailer($id)
+    {
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';  //gmail SMTP server
+        $mail->SMTPAuth = true;
+        //to view proper logging details for success and error messages
+        // $mail->SMTPDebug = 1;
+        $mail->Host = 'smtp.gmail.com';  //gmail SMTP server
+        $mail->Username = 'lepi.laptop10@gmail.com';   //email
+        $mail->Password = 'kmak zlio wchv dymb';   //16 character obtained from app password created
+        $mail->Port = 465;                    //SMTP port
+        $mail->SMTPSecure = "ssl";
+
+        $users = db_connect()->table('users')->where('id', $id)->get()->getRow();
+
+        //sender information
+        $mail->setFrom('lepi.laptop10@gmail.com', 'Si - Tukang');
+
+        //receiver email address and name
+        $mail->addAddress($users->email, $users->nama_user);
+
+        // Add cc or bcc   
+        // $mail->addCC('email@mail.com');  
+        // $mail->addBCC('user@mail.com');  
+
+        $mail->isHTML(true);
+
+        $mail->Subject = 'PHPMailer SMTP test';
+        $data = [
+            'identity' => $users->{$this->configIonAuth->identity},
+            'forgottenPasswordCode' => $users->forgotten_password_code,
+        ];
+        $mail->Body    = view('auth/email/forgot_password.tpl.php', $data);
+
+        // Send mail   
+        if (!$mail->send()) {
+            session()->setFlashdata('error', 'Email not sent an error was encountered: ' . $mail->ErrorInfo);
+            return false;
+        } else {
+            return true;
+        }
+
+        $mail->smtpClose();
     }
 }

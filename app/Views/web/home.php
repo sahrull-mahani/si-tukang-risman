@@ -48,7 +48,7 @@
             $int = 5;
             break;
           default:
-            $int = rand(1, 6);
+            $int = rand(0, 5);
             break;
         }
         ?>
