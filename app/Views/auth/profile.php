@@ -79,13 +79,13 @@
                         <div class="card-body">
                             <?= form_open('auth/change_password', array('class' => 'form-horizontal', 'id' => 'save-accounts')); ?>
                             <div class="form-group row mode2">
-                                <label for="nama_user" class="col-sm-4 col-form-label">Email</label>
+                                <label for="nama_user" class="col-sm-4 col-form-label">Nama</label>
                                 <div class="col-sm-8 item">
-                                    <input type="text" name="nama_user" value="<?= isset($get->nama) ? $get->nama : $user->nama_user; ?>" id="nama_user" class="form-control" required="required" <?= isset($get->nama) ? 'readonly' : ''; ?> />
+                                    <input type="text" name="nama_user" value="<?= isset($get->nama) ? $get->nama : $user->nama_user; ?>" id="nama_user" class="form-control" required="required" <?= isset($get->nama) ? 'readonly' : ''; ?> readonly/>
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <label for="username" class="col-sm-4 col-form-label">Email</label>
+                                <label for="username" class="col-sm-4 col-form-label">Username</label>
                                 <div class="col-sm-8 item">
                                     <input type="text" name="username" value="<?= isset($user->username) ? $user->username : ''; ?>" id="username" class="form-control" required="required" <?= $identityColumn === 'username' ? 'readonly' : ''; ?> />
                                 </div>
@@ -93,13 +93,13 @@
                             <div class="form-group row mode2">
                                 <label for="email" class="col-sm-4 col-form-label">Email</label>
                                 <div class="col-sm-8 item">
-                                    <input type="text" name="email" value="<?= isset($user->email) ? $user->email : ''; ?>" id="email" class="form-control" required="required" <?= $identityColumn === 'email' ? 'readonly' : ''; ?> />
+                                    <input type="text" name="email" value="<?= isset($user->email) ? $user->email : ''; ?>" id="email" class="form-control" required="required" <?= $identityColumn === 'email' ? 'readonly' : ''; ?> readonly />
                                 </div>
                             </div>
                             <div class="form-group row mode2">
                                 <label for="phone" class="col-sm-4 col-form-label">Phone</label>
                                 <div class="col-sm-8 item">
-                                    <input type="text" name="phone" value="<?= isset($user->phone) ? $user->phone : ''; ?>" id="phone" class="form-control" required="required" />
+                                    <input type="text" name="phone" value="<?= isset($user->phone) ? $user->phone : ''; ?>" id="phone" class="form-control" required="required" readonly/>
                                 </div>
                             </div>
                             <div class="form-group row mode2">
