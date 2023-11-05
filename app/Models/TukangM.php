@@ -18,7 +18,6 @@ class TukangM extends Model
 
     protected $validationRules = [
         'nama' => 'required|max_length[150]',
-        'nik' => 'required|max_length[18]',
         'tarif' => 'required|max_length[100]',
         'umur' => 'required|max_length[3]',
         'alamat' => 'required|max_length[65535]',
@@ -28,7 +27,6 @@ class TukangM extends Model
 
     protected $validationMessages = [
         'nama' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 150 Karakter'],
-        'nik' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 18 Karakter'],
         'tarif' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 100 Karakter'],
         'umur' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal  Karakter'],
         'alamat' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 65535 Karakter'],

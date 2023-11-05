@@ -27,6 +27,7 @@ class Tukang extends Migration
             'nik'     => [
                 'type'          => 'CHAR',
                 'constraint'    => 18,
+                'null'          => true
             ],
             'tarif'     => [
                 'type'          => 'CHAR',

@@ -170,7 +170,7 @@ class Tukang extends BaseController
                 $data = array(
                     'id' => $id,
                     'nama' => $nama,
-                    'nik' => $this->request->getPost('nik'),
+                    'nik' => $this->request->getPost('nik') != '' ? $this->request->getPost('nik') : null,
                     'umur' => $this->request->getPost('umur'),
                     'alamat' => $this->request->getPost('alamat'),
                     'id_kategori' => $this->request->getPost('kategori'),

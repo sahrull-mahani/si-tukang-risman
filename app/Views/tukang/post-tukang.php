@@ -37,15 +37,15 @@
                         <div class="card-body">
                             <div class="form-group item">
                                 <label for="nama">Nama</label>
-                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama" value="<?= $get->nama ?>" required />
+                                <input type="text" class="form-control only-alpha" id="nama" name="nama" placeholder="Nama" value="<?= $get->nama ?>" required />
                             </div>
                             <div class="form-group item">
                                 <label for="nik">NIK</label>
-                                <input type="text" class="form-control" id="nik" name="nik" placeholder="@ex: 75xxxxxx" value="<?= @$get->nik ?>" required />
+                                <input type="text" class="form-control only-number" id="nik" name="nik" placeholder="@ex: 75xxxxxx" value="<?= @$get->nik ?>" />
                             </div>
                             <div class="form-group item">
                                 <label for="umur">Umur</label>
-                                <input type="text" class="form-control" id="umur" name="umur" placeholder="Umur" value="<?= @$get->umur ?>" required />
+                                <input type="number" min="20" max="80" class="form-control" id="umur" name="umur" placeholder="Umur" value="<?= @$get->umur ?>" required />
                             </div>
                             <div class="form-group item">
                                 <label for="alamat">Alamat</label>

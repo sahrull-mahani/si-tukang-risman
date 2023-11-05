@@ -2,12 +2,12 @@ $.fn.fileinputBsVersion = "3.3.7"; // if not set, this will be auto-derived
 $.post({
     url: location.origin + '/Tukang/fotoproject',
     async: false,
-    data: {id: $('#id').val(), nama: $('#nama').val()},
-    success: function(res) {
+    data: { id: $('#id').val(), nama: $('#nama').val() },
+    success: function (res) {
         let data = $.parseJSON(res)
         console.log(data.length)
         let fotoproject = []
-        $.each(data, function(i, v) {
+        $.each(data, function (i, v) {
             fotoproject.push(location.origin + '/Berita/img_thumb/' + v.sumber)
         })
         console.log(fotoproject)
@@ -26,7 +26,7 @@ $.post({
                 'initialPreviewAsData': true,
                 'initialPreview': fotoproject
             })
-        }else{
+        } else {
             $('.input-id.project').fileinput({
                 'showUpload': false,
                 'showRemove': false,
@@ -58,7 +58,7 @@ if ($('.input-id.ktp').data('urlimage') != '') {
         'initialPreviewAsData': true,
         'initialPreview': $('.input-id.ktp').data('urlimage')
     })
-}else{
+} else {
     $(".input-id.ktp").fileinput({
         'showUpload': false,
         'showRemove': false,
@@ -89,7 +89,7 @@ if ($('.input-id').data('urlimage') != '') {
         'initialPreviewAsData': true,
         'initialPreview': $('.input-id').data('urlimage')
     })
-}else{
+} else {
     $(".input-id").fileinput({
         'showUpload': false,
         'showRemove': false,
@@ -142,9 +142,9 @@ $('.select2').select2({
 })
 $.get({
     url: location.origin + '/tukang/getkategori/' + $('#kategori').data('id'),
-    success: function(res) {
+    success: function (res) {
         let data = $.parseJSON(res)
-        $.each(data, function(i, v) {
+        $.each(data, function (i, v) {
             $('#kategori').val(v.id_kategori).change()
         })
     }
@@ -172,3 +172,20 @@ $(".tag-with-input").select2({
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+$(".only-number").on('keyup', function () {
+    let regex = /[^0-9.]/g
+    if (regex.test(this.value)) {
+        alert('Masukan Angka!')
+        // $(this).addClass('border border-danger')
+    }
+    this.value = this.value.replace(regex, '').replace(/(\..*?)\..*/g, '$1')
+})
+$(".only-alpha").on('keyup', function () {
+    let regex = /[^a-z/A-Z/ ]/g
+    if (regex.test(this.value)) {
+        alert('Masukan Alphabets!')
+        // $(this).addClass('border border-danger')
+    }
+    this.value = this.value.replace(regex, '')
+})
