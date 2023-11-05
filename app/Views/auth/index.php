@@ -51,7 +51,7 @@
                                                 <th data-field="nomor">No</th>
                                                 <th data-field="nama_user"><?= lang('Auth.index_name_th');?></th>
                                                 <!-- <th data-field="username">User Name</th> -->
-                                                <th data-field="email"><?= lang('Auth.index_email_th');?> dan Username</th>
+                                                <th data-field="username">Username</th>
                                                 <th data-field="group"><?= lang('Auth.index_groups_th');?></th>
                                                 <th data-field="active"><?= lang('Auth.index_status_th');?></th>
                                             </tr>

@@ -8,7 +8,7 @@
     </div>
     <?php if ($identity_column !== 'email') { ?>
         <div class="form-group row mode2">
-            <label for="identity" class="col-sm-3 col-form-label">Identitas:</label>
+            <label for="identity" class="col-sm-3 col-form-label">Username:</label>
             <div class="col-sm-9 item">
                 <input type="text" name="identity" value="<?= isset($user->username)  && $action == 'update' ? $user->username : ''; ?>" id="identity" class="form-control" required="required" />
             </div>
@@ -16,7 +16,7 @@
         </div>
     <?php } ?>
     <div class="form-group row mode2">
-        <label for="identity" class="col-sm-3 col-form-label">Surel:</label>
+        <label for="identity" class="col-sm-3 col-form-label">Email:</label>
         <div class="col-sm-9 item">
             <input type="text" name="email" value="<?= isset($user->email) && $action == 'update' ? $user->email : ''; ?>" id="email" class="form-control" required="required" />
         </div>
