@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="phone" id="phone" placeholder="No Hp/Wa : 08xxxx" required>
+          <input type="text" class="form-control only-number" name="phone" id="phone" placeholder="No Hp/Wa : 08xxxx" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fa fa-phone"></span>
@@ -135,6 +135,14 @@
   <script src="<?= base_url('assets/plugins/select2/js/select2.full.min.js') ?>"></script>
   <script src="<?= base_url('assets/dist/js/validator.js') ?>"></script>
   <script>
+    $(".only-number").on('keyup', function() {
+      let regex = /[^0-9.]/g
+      if (regex.test(this.value)) {
+        alert('Masukan Angka!')
+        $(this).addClass('border border-danger')
+      }
+      this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
+    })
     $('.select2').select2({
       placeholder: 'Pilih Kategori',
       allowClear: true

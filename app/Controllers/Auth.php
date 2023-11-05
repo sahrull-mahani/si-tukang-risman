@@ -215,7 +215,7 @@ class Auth extends BaseController
                 if ($this->validation->withRequest($this->request)->run()) {
                     $groupData = $this->request->getPost('groups');
 
-                    $email = strtolower($this->request->getPost('email'));
+                    $email = !empty($this->request->getPost('email')) ? strtolower($this->request->getPost('email')) : str_replace(' ', '-', $this->request->getPost('nama_user')) . '@mail.com';
                     $identity = $identityColumn === 'email' ? $email : $this->request->getPost('identity');
                     $password = $this->request->getPost('password');
                     $additionalData = [

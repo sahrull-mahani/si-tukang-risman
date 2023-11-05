@@ -79,43 +79,43 @@
                         <div class="card-body">
                             <?= form_open('auth/change_password', array('class' => 'form-horizontal', 'id' => 'save-accounts')); ?>
                             <div class="form-group row mode2">
-                                <?= form_label(lang('Auth.edit_user_name_label'), 'nama_user', ['class' => 'col-sm-4 col-form-label']); ?>
+                                <label for="nama_user" class="col-sm-4 col-form-label">Email</label>
                                 <div class="col-sm-8 item">
                                     <input type="text" name="nama_user" value="<?= isset($get->nama) ? $get->nama : $user->nama_user; ?>" id="nama_user" class="form-control" required="required" <?= isset($get->nama) ? 'readonly' : ''; ?> />
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <?= form_label(lang('Auth.edit_username_label'), 'username', ['class' => 'col-sm-4 col-form-label']); ?>
+                                <label for="username" class="col-sm-4 col-form-label">Email</label>
                                 <div class="col-sm-8 item">
                                     <input type="text" name="username" value="<?= isset($user->username) ? $user->username : ''; ?>" id="username" class="form-control" required="required" <?= $identityColumn === 'username' ? 'readonly' : ''; ?> />
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <?= form_label(lang('Auth.edit_user_email_label'), 'email', ['class' => 'col-sm-4 col-form-label']); ?>
+                                <label for="email" class="col-sm-4 col-form-label">Email</label>
                                 <div class="col-sm-8 item">
                                     <input type="text" name="email" value="<?= isset($user->email) ? $user->email : ''; ?>" id="email" class="form-control" required="required" <?= $identityColumn === 'email' ? 'readonly' : ''; ?> />
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <?= form_label(lang('Auth.edit_user_phone_label'), 'phone', ['class' => 'col-sm-4 col-form-label']); ?>
+                                <label for="phone" class="col-sm-4 col-form-label">Phone</label>
                                 <div class="col-sm-8 item">
                                     <input type="text" name="phone" value="<?= isset($user->phone) ? $user->phone : ''; ?>" id="phone" class="form-control" required="required" />
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <label for="old_password" class="col-sm-4 col-form-label"><?= lang('Auth.change_password_old_password_label'); ?></label>
+                                <label for="old_password" class="col-sm-4 col-form-label">Password Lama</label>
                                 <div class="col-sm-8 item">
                                     <?= form_input($old_password); ?>
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <label for="new_password" class="col-sm-4 col-form-label"><?= sprintf(lang('Auth.change_password_new_password_label'), $minPasswordLength); ?></label>
+                                <label for="new_password" class="col-sm-4 col-form-label">Password New</label>
                                 <div class="col-sm-8 item">
                                     <?= form_input($new_password); ?>
                                 </div>
                             </div>
                             <div class="form-group row mode2">
-                                <label for="new_password_confirm" class="col-sm-4 col-form-label"><?= lang('Auth.change_password_new_password_confirm_label'); ?></label>
+                                <label for="new_password_confirm" class="col-sm-4 col-form-label">Password konfirmasi</label>
                                 <div class="col-sm-8 item">
                                     <?= form_input($new_password_confirm); ?>
                                 </div>
@@ -123,7 +123,6 @@
                             <div class="form-group">
                                 <div class="offset-sm-4 col-sm-8">
                                     <?= form_hidden('id', $session->user_id); ?>
-                                    <?php //form_submit('submit', lang('Auth.change_password_submit_btn'), ['class' => 'btn btn-primary']); ?>
                                     <button type="submit" class="btn btn-primary">Change</button>
                                 </div>
                             </div>
