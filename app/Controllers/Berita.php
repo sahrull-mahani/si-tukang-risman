@@ -7,7 +7,7 @@ use App\Models\GaleriModel;
 
 class Berita extends BaseController
 {
-    protected $beritam;
+    protected $beritam, $galerim, $data, $session;
     function __construct()
     {
         $this->beritam = new BeritaModel();
@@ -45,38 +45,29 @@ class Berita extends BaseController
 
     public function Post()
     {
-        $this->data = array('title' => 'Post Berita | Admin', 'breadcome' => 'Post Berita', 'url' => 'berita/', 'm_open_berita' => 'menu-open', 'mm_berita' => 'active', 'm_post' => 'active', 'session' => $this->session);
+        $this->data = array('title' => 'Post Berita | Admin', 'action' => 'insert', 'breadcome' => 'Post Berita', 'url' => 'berita/', 'm_open_berita' => 'menu-open', 'mm_berita' => 'active', 'm_post' => 'active', 'session' => $this->session);
 
         echo view('App\Views\berita\post-berita', $this->data);
     }
-
-    public function create()
+    public function edit($id)
     {
-        $this->data = array('action' => 'insert', 'btn' => '<i class="fas fa-save"></i> Save');
-        $num_of_row = $this->request->getPost('num_of_row');
-        for ($x = 1; $x <= $num_of_row; $x++) {
-            $data['nama'] = 'Data ' . $x;
-            $this->data['form_input'][] = view('App\Views\berita\form_input', $data);
-        }
-        $status['html']         = view('App\Views\berita\form_modal', $this->data);
-        $status['modal_title']  = 'Tambah Data Berita';
-        $status['modal_size']   = 'modal-xl';
-        echo json_encode($status);
-    }
-    public function edit()
-    {
-        $id = $this->request->getPost('id');
         $get = $this->beritam->find($id);
-        $galeri = $this->galerim->galeriLikeWhere('berita_', $id)->findAll();
-        $this->data = array('get' => $get, 'gambar' => $galeri, 'action' => 'update', 'status' => $this->request->getPost('status'));
-        $status['html']         = view('App\Views\berita\form_input', $this->data);
-        $status['modal_title']  = '<b>Update Berita : </b>' . $get->judul;
-        $status['modal_size']   = 'modal-xl';
-        echo json_encode($status);
+        $gambar = $this->galerim->where('id_sumber', $id)->like('sumber', 'berita_')->findAll();
+        foreach ($gambar as $row) {
+            $ids[] = $row->id;
+            $images[] = $row->sumber;
+            $sizes[] = filesize(WRITEPATH . "uploads/img/$row->sumber");
+        }
+        $ids = implode(',', $ids);
+        $sizes = implode(',', $sizes);
+        $images = implode(',', $images);
+        $this->data = array('title' => 'Post Berita | Admin', 'action' => 'update', 'get' => $get, 'ids' => $ids, 'images' => $images, 'sizes' => $sizes, 'breadcome' => 'Update Berita', 'url' => 'berita/', 'm_open_berita' => 'menu-open', 'mm_berita' => 'active', 'm_post' => 'active', 'session' => $this->session);
+
+        echo view('App\Views\berita\post-berita', $this->data);
     }
     public function detail()
     {
-        $id = $this->request->getPost('id');
+        $id = $this->request->getPost('id')[0];
         $get = $this->beritam->find($id);
         $galeri = $this->galerim->galeriLikeWhere('berita_', $id)->findAll();
         $this->data = array('get' => $get, 'gambar' => $galeri, 'action' => 'update', 'status' => $this->request->getPost('status'));
@@ -92,7 +83,7 @@ class Berita extends BaseController
                 $files = $this->request->getFileMultiple('userfile');
                 $galeri = [];
 
-                $judul = $this->request->getPost('judul');
+                $judul = (string)$this->request->getPost('judul');
                 $data =  array(
                     'judul' => $judul,
                     'slug' => str_replace(' ', '-', strtolower($judul)),
@@ -126,7 +117,7 @@ class Berita extends BaseController
                 $id = $this->request->getPost('id');
                 $files = $this->request->getFileMultiple('userfile');
                 $galeri = [];
-                $judul = $this->request->getPost('judul');
+                $judul = (string)$this->request->getPost('judul');
                 $data =  array(
                     'judul' => $judul,
                     'slug' => str_replace(' ', '-', strtolower($judul)),
@@ -135,11 +126,6 @@ class Berita extends BaseController
                 if ($this->beritam->update($id, $data)) {
                     if ($files[0]->getError() !== 4) {
                         $get = $this->galerim->where('id_sumber', $id)->findAll();
-                        foreach ($get as $pic) {
-                            unlink(WRITEPATH . "uploads/img/$pic->sumber"); // delete terlebih dahulu
-                            unlink(WRITEPATH . "uploads/thumbs/$pic->sumber"); // delete terlebih dahulu
-                        }
-                        $this->galerim->where('id_sumber', $id)->delete(); // delete dari database
                         foreach ($files as $pic) { // masukan gambar baru
                             $file_name = 'berita_' . $pic->getRandomName();
                             if ($this->upload_img($file_name, $pic)) {
@@ -193,6 +179,23 @@ class Berita extends BaseController
                 break;
         }
     }
+    public function delete_image()
+    {
+        $id = $this->request->getPost('key');
+        $image = $this->galerim->find($id);
+        $images = $this->galerim->where('id_sumber', $image->id_sumber)->countAllResults();
+
+        if ($images > 1) {
+            if (file_exists(WRITEPATH . "uploads/img/$image->sumber") && file_exists(WRITEPATH . "uploads/thumbs/$image->sumber") && !empty($image->sumber)) {
+                unlink(WRITEPATH . "uploads/img/$image->sumber");
+                unlink(WRITEPATH . "uploads/thumbs/$image->sumber");
+            }
+            $this->galerim->delete($id);
+            return json_encode($id);
+        } else {
+            return 'Sisakan satu file!';
+        }
+    }
     private function upload_img($file_name, $img): bool
     {
         $validationRule = [
@@ -209,12 +212,16 @@ class Berita extends BaseController
             return false;
         }
         $filepath = WRITEPATH . 'uploads/';
-        $file_old = $this->request->getPost('old_file');
+        $file_old = (string)$this->request->getPost('old_file');
         if (!empty($file_old)) {
             delete_files($filepath . 'img/', $file_old); //Hapus terlebih dahulu jika file ada
             delete_files($filepath . 'thumbs/', $file_old); //Hapus terlebih dahulu jika file ada
         }
         if ($img->isValid() && !$img->hasMoved()) {
+
+            if (!is_dir($filepath . 'img')) mkdir($filepath . 'img');
+            if (!is_dir($filepath . 'thumbs')) mkdir($filepath . 'thumbs');
+
             $image = \Config\Services::image('gd'); //Load Image Libray
             $image->withFile($img)->save($filepath . 'img/' . $file_name);
             //thumbs

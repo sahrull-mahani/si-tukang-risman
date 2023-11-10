@@ -74,7 +74,19 @@ if ($('.input-id.ktp').data('urlimage') != '') {
 
 }
 
-if ($('.input-id').data('urlimage') != '') {
+if ($('.input-id').data('image') != '') {
+    let image = [], config = []
+    let ids = $('.input-id').data('id').toString().split(',')
+    let images = $('.input-id').data('image').toString().split(',')
+    let sizes = $('.input-id').data('size').toString().split(',')
+
+    $.each(images, function (i, val) {
+        image.push(`${location.origin}/berita/img_medium/${val}`)
+    })
+    $.each(sizes, function (i, size) {
+        config.push({ caption: 'Berita Image', size: size, url: location.origin + '/berita/delete_image', key: ids[i] })
+    })
+
     $(".input-id").fileinput({
         'showUpload': false,
         'showRemove': false,
@@ -82,12 +94,21 @@ if ($('.input-id').data('urlimage') != '') {
         'previewFileType': 'image',
         'browseOnZoneClick': true,
         'required': false,
+        'maxFileSize': 3 * 1024,
+        'uploadUrl': location.origin,
         'allowedFileExtensions': ["jpg", "png", "jpeg"],
         'browseLabel': 'Pilih Gambar',
         'browseClass': 'btn btn-success btn-block',
         'browseIcon': '<i class="fa fa-camera"></i> ',
+        'overwriteInitial': false,
+        'initialPreviewShowDelete': true,
+        'fileActionSettings': {
+            'showUpload': false,
+            'showRemove': true,
+        },
         'initialPreviewAsData': true,
-        'initialPreview': $('.input-id').data('urlimage')
+        'initialPreview': image,
+        'initialPreviewConfig': config
     })
 } else {
     $(".input-id").fileinput({
@@ -97,6 +118,8 @@ if ($('.input-id').data('urlimage') != '') {
         'previewFileType': 'image',
         'browseOnZoneClick': true,
         'required': false,
+        'maxFileSize': 3 * 1024,
+        'uploadUrl': location.origin,
         'allowedFileExtensions': ["jpg", "png", "jpeg"],
         'browseLabel': 'Pilih Gambar',
         'browseClass': 'btn btn-success btn-block',

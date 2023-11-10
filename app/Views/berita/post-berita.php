@@ -37,16 +37,17 @@
                         <div class="card-body">
                             <div class="form-group item">
                                 <label for="judul">Judul Postingan</label>
-                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Judul" required />
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Judul" value="<?= @$get->judul ?>" required />
                             </div>
-                            <input class="input-id" type="file" name="userfile[]" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                            <input class="input-id" type="file" name="userfile[]" accept=".jpg, .png, image/jpeg, image/png" multiple data-id="<?= @$ids ?>" data-image="<?= @$images ?>" data-size="<?= @$sizes ?>">
                             <div class="form-group item mt-3">
                                 <label for="body">Isi Berita</label>
-                                <textarea class="text-area" name="isi" id="isi"></textarea>
+                                <textarea class="text-area" name="isi" id="isi"><?= @$get->isi_berita ?></textarea>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <input type='hidden' name='action' value="insert" />
+                            <input type='hidden' name='action' value="<?= $action ?>" />
+                            <input type='hidden' name='id' value="<?= @$get->id ?>" />
                             <button type="submit" class="btn btn-primary btn-sub">Submit</button>
                             <button class="btn btn-primary btn-load d-none" type="button" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

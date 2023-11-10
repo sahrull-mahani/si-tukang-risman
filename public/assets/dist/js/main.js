@@ -171,13 +171,8 @@ function readFile(url) {
         $("#spinner").hide();
     });
     $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
-        if ($table.bootstrapTable('getSelections').length > 1) {
-            $single.attr('disabled', true)
-            $singledetail.attr('disabled', true)
-        } else {
-            $single.prop('disabled', !$table.bootstrapTable('getSelections').length)
-            $singledetail.prop('disabled', !$table.bootstrapTable('getSelections').length)
-        }
+        $single.prop('disabled', !$table.bootstrapTable('getSelections').length)
+        $singledetail.prop('disabled', !$table.bootstrapTable('getSelections').length)
         $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
         $publish.prop('disabled', !$table.bootstrapTable('getSelections').length)
         $edit.prop('disabled', !$table.bootstrapTable('getSelections').length)
@@ -525,28 +520,10 @@ function readFile(url) {
     });
     $single.bind('click', function (e) {
         e.stopImmediatePropagation();
-        var ids = JSON.stringify($table.bootstrapTable('getSelections'))
-        var a = JSON.parse(ids);
-        let id = a[0].id
-        $('#modal_content').modal('show')
-        $.ajax({
-            url: url + $(this).attr('method'),
-            type: 'POST',
-            data: { id: a[0].id, status: a[0].status },
-            dataType: "html",
-            success: function (response) {
-                var data = $.parseJSON(response);
-                $('#modal_content').modal({
-                    backdrop: 'static'
-                })
-                $('.isi-modal').html(data.html)
-                $('.modal-title').html(data.modal_title)
-                $('#modal-size').addClass(data.modal_size)
-            },
-            error: function (jqXHR, exception, thrownError) {
-                ajax_error_handling(jqXHR, exception, thrownError);
-            }
+        var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.id
         })
+        document.location.replace(location.origin + '/berita/edit/' + ids[0])
     })
     $singledetail.bind('click', function (e) {
         let href = $(this).data('href')
