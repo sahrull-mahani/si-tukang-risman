@@ -1030,10 +1030,13 @@ class Auth extends BaseController
         //to view proper logging details for success and error messages
         // $mail->SMTPDebug = 1;
         $mail->Host = 'smtp.gmail.com';  //gmail SMTP server
-        $mail->Username = 'lepi.laptop10@gmail.com';   //email
-        $mail->Password = 'kmak zlio wchv dymb';   //16 character obtained from app password created
+        $mail->Username = 'polaparisman1998@gmail.com';   //email
+        $mail->Password = 'odmb tqnt khpf wwwd';   //16 character obtained from app password created
         $mail->Port = 465;                    //SMTP port
         $mail->SMTPSecure = "ssl";
+
+        // odmb tqnt khpf wwwd
+        // polaparisman1998@gmail.com
 
         $users = db_connect()->table('users')->where('id', $id)->get()->getRow();
 

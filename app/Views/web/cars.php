@@ -21,7 +21,7 @@
         <?php $key++ ?>
         <div class="col-lg-4 col-md-6 mb-4 <?= getKategori($row->id) == 'Kosong' ? 'd-none' : '' ?>">
           <div class="item-1">
-            <img src="<?= $row->foto == 'profile.png' ? '/admin_assets/img/profile.png' : site_url("web/img_medium/$row->foto") ?>" alt="Image" class="img-fluid">
+            <img src="<?= $row->foto == 'profile.png' ? '/admin_assets/img/profile.png' : site_url("web/img_medium/$row->foto") ?>" alt="Image" class="img-fluid" style="object-fit: cover; width: 100%; height: 320px;">
             <div class="item-1-contents">
               <div class="text-center">
                 <h3><a href="#" data-toggle="modal" data-target="<?= "#modal-$row->id" ?>"><?= ucwords($row->nama) ?></a></h3>
