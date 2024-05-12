@@ -14,7 +14,7 @@ class KategoriGroup extends Migration
                 'constraint'    => '11',
                 'unsigned'      => true,
                 'auto_increment' => true
-            ],  
+            ],
             'id_tukang'        => [
                 'type'          => 'int',
                 'constraint'    => 11,
@@ -25,10 +25,14 @@ class KategoriGroup extends Migration
                 'constraint'    => 11,
                 'unsigned'      => true,
             ],
+            'tarif'        => [
+                'type'          => 'char',
+                'constraint'    => 10,
+            ],
         ]);
         $this->forge->addKey('id', true);
-		// $this->forge->addForeignKey('id_tukang', 'users', 'id', 'CASCADE', 'NO ACTION');
-        // $this->forge->addForeignKey('id_kategori', 'kategori', 'id', 'CASCADE', 'NO ACTION');
+		$this->forge->addForeignKey('id_tukang', 'tukang', 'id', 'CASCADE', 'NO ACTION');
+        $this->forge->addForeignKey('id_kategori', 'kategori', 'id', 'CASCADE', 'NO ACTION');
         $this->forge->createTable('kategori_group');
     }
 

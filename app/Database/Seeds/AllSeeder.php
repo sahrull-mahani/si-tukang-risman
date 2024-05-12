@@ -37,14 +37,14 @@ class AllSeeder extends Seeder
 				'ip_address'              => '127.0.0.1',
 				'username'                => $i == 0 ? 'administrator' : ($i > 7 ? "user_$i" : "tukang_$i"),
 				'password'                => '$2y$08$200Z6ZZbp3RAEXoaWcMA6uJOFicwNZaqk4oDhqTUiFXFe63MG.Daa',
-				'email'                   => $i == 0 ? 'admin@admin.com' : ($i > 7 ? 'user'.sprintf('%02d', $i).'@gmail.com' : 'tukang'.sprintf('%02d', $i).'@gmail.com'),
+				'email'                   => $i == 0 ? 'admin@admin.com' : ($i > 7 ? 'user' . sprintf('%02d', $i) . '@gmail.com' : 'tukang' . sprintf('%02d', $i) . '@gmail.com'),
 				'activation_code'         => '',
 				'forgotten_password_code' => null,
 				'created_on'              => '1268889823',
 				'last_login'              => '1268889823',
 				'active'                  => '1',
 				'nama_user'               => $i == 0 ? 'Admin' : $faker->name(),
-				'img'											=> 'profile.png',
+				'img'					  => 'profile.png',
 				'phone'                   => $faker->phoneNumber(),
 			]);
 		}
@@ -54,26 +54,32 @@ class AllSeeder extends Seeder
 		$categories = [
 			[
 				'nama_kategori'		=> 'mendirikan bangunan',
+				'satuan'			=> 'permeter',
 				'keterangan'			=> null,
 			],
 			[
 				'nama_kategori'		=> 'pemasangan lantai',
+				'satuan'			=> 'permeter',
 				'keterangan'			=> null,
 			],
 			[
 				'nama_kategori'		=> 'septic tank',
+				'satuan'			=> 'permeter',
 				'keterangan'			=> null,
 			],
 			[
 				'nama_kategori'		=> 'atap rumah',
+				'satuan'			=> 'perseng',
 				'keterangan'			=> null,
 			],
 			[
 				'nama_kategori'		=> 'pagar',
+				'satuan'			=> 'permeter',
 				'keterangan'			=> null,
 			],
 			[
 				'nama_kategori'		=> 'cat bangunan',
+				'satuan'			=> 'percat',
 				'keterangan'			=> null,
 			],
 		];
@@ -85,11 +91,12 @@ class AllSeeder extends Seeder
 			array_push($tuakng, [
 				'user_id'				=> $row->id,
 				'nama'					=> $row->nama_user,
-				'nik'						=> rand(10,10000000),
+				'nik'					=> '750101' . rand(10, 10000000),
 				'tarif'					=> 150000,
-				'umur'					=> 34,
+				'umur'					=> rand(34, 48),
 				'alamat'				=> $faker->address(),
 				'telp'					=> $row->phone,
+				'wa'					=> rand(0, 1),
 				'foto'					=> $row->img,
 				'foto_ktp'			=> null,
 				'created_at'		=> Time::now(),
@@ -98,24 +105,26 @@ class AllSeeder extends Seeder
 		}
 		$this->db->table('tukang')->insertBatch($tuakng);
 
+		$tarif = ['250000', '230000', '200000'];
 		$kategoriGroups = [];
 		$datatukang = $this->db->table('tukang')->get()->getResult();
 		$datakategori = $this->db->table('kategori')->get()->getResult();
-		foreach($datatukang as $row) {
+		foreach ($datatukang as $row) {
 			array_push($kategoriGroups, [
 				'id_tukang'		=> $row->id,
-				'id_kategori'	=> $datakategori[rand(0,5)]->id
+				'id_kategori'	=> $datakategori[rand(0, 5)]->id,
+				'tarif'			=> $tarif[rand(0, 2)],
 			]);
 		}
 		$this->db->table('kategori_group')->insertBatch($kategoriGroups);
 
 		$usersGroups = [];
-			for ($i = 1; $i <=11; $i++) {
-				array_push($usersGroups, [
-					'user_id'  => $i,
-					'group_id' => $i == 1 ? 1 : ($i > 8 ? 3 : 2),
-				]);
-			}
+		for ($i = 1; $i <= 11; $i++) {
+			array_push($usersGroups, [
+				'user_id'  => $i,
+				'group_id' => $i == 1 ? 1 : ($i > 8 ? 3 : 2),
+			]);
+		}
 		$this->db->table($tables['users_groups'])->insertBatch($usersGroups);
 	}
 }

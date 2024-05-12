@@ -81,23 +81,38 @@ class Web extends BaseController
         $data = [
             'title'     => "Proyek",
             'a_proyek'  => 'active',
-            'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->groupBy('tukang.nama')->findAll(),
+            'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->where('o.deleted_at', null)->groupBy('tukang.nama')->findAll(),
             'galeri'    => $this->galerim,
         ];
+        // dd($data['tukang']);
         return view("App\Views\web\cars", $data);
     }
     public function rental()
     {
         $idtukang = $this->request->getPost('idtukang');
-        $lokasi = $this->request->getPost('lokasi');
-        $tugas = $this->request->getPost('tugas');
-        $jenis_kerja = $this->request->getPost('jenis_kerja');
+        $categoires = $this->request->getPost('kategori');
+        foreach ($categoires as $cattegory) {
+            $idkat = explode('|', $cattegory);
+            $kategori[] = end($idkat);
+        }
+        $deskripsi = $this->request->getPost('deskripsi');
+        $ukuran = $this->request->getPost('ukuran');
+        $pembayaran = $this->request->getPost('pembayaran');
+        $tarif = $this->request->getPost('tarif');
+        $konsumsi = $this->request->getPost('konsumsi');
+        $alat = $this->request->getPost('alat');
+        $detail = $this->request->getPost('detail');
         $data = [
             'user_id'   => session('user_id'),
             'tukang_id' => $idtukang,
-            'lokasi' => $lokasi,
-            'tugas' => $tugas,
-            'jenis_kerja' => $jenis_kerja,
+            'kategori' => implode(',', $kategori),
+            'deskripsi' => $deskripsi,
+            'ukuran' => $ukuran,
+            'jenis_kerja' => $pembayaran,
+            'biaya' => $tarif,
+            'konsumsi' => $konsumsi,
+            'alat' => $alat,
+            'detail' => $detail,
         ];
         $this->orderanm->insert($data);
         $this->tukangm->update($idtukang, ['status' => 1]);
@@ -105,7 +120,6 @@ class Web extends BaseController
         $status['type'] = 'success';
         $status['text'] = 'Berhasil dirental, tunggu konfirmasi tukang';
         return json_encode($status);
-        // return redirect()->to('/web/proyek');
     }
     public function selesai()
     {
@@ -118,7 +132,6 @@ class Web extends BaseController
         $data = [
             'keterangan'    => $this->request->getPost('keterangan'),
             'rating'        => $this->request->getPost('rating'),
-            'durasi'        => $this->request->getPost('durasi'),
         ];
         $this->orderanm->update($orderlast->id, $data);
         if ($this->tukangm->update($idtukang, ['status' => 0])) {

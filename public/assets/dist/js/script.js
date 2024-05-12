@@ -5,12 +5,10 @@ $.post({
     data: { id: $('#id').val(), nama: $('#nama').val() },
     success: function (res) {
         let data = $.parseJSON(res)
-        console.log(data.length)
         let fotoproject = []
         $.each(data, function (i, v) {
-            fotoproject.push(location.origin + '/Berita/img_thumb/' + v.sumber)
+            fotoproject.push(location.origin + '/Web/img_thumb/' + v.sumber)
         })
-        console.log(fotoproject)
         if (fotoproject.length > 0) {
             $('.input-id.project').fileinput({
                 'showUpload': false,
@@ -43,8 +41,9 @@ $.post({
     }
 })
 
-if ($('.input-id.ktp').data('urlimage') != '') {
-    $(".input-id.ktp").fileinput({
+if ($('.ktp').data('urlimage') != '') {
+    let ktp = $('.ktp').data('urlimage')
+    $(".ktp").fileinput({
         'showUpload': false,
         'showRemove': false,
         'showCancel': false,
@@ -56,10 +55,13 @@ if ($('.input-id.ktp').data('urlimage') != '') {
         'browseClass': 'btn btn-success btn-block',
         'browseIcon': '<i class="fa fa-camera"></i> ',
         'initialPreviewAsData': true,
-        'initialPreview': $('.input-id.ktp').data('urlimage')
+        'initialPreview': [ktp],
+        'initialPreviewConfig': [{
+            caption: 'KTP', size: 10, url: location.origin, key: 99
+        }]
     })
 } else {
-    $(".input-id.ktp").fileinput({
+    $(".ktp").fileinput({
         'showUpload': false,
         'showRemove': false,
         'showCancel': false,
@@ -69,62 +71,55 @@ if ($('.input-id.ktp').data('urlimage') != '') {
         'allowedFileExtensions': ["jpg", "png", "jpeg"],
         'browseLabel': 'Pilih Gambar',
         'browseClass': 'btn btn-success btn-block',
-        'browseIcon': '<i class="fa fa-camera"></i> ',
+        'browseIcon': '<i class="fa fa-camera"></i> '
     })
-
 }
 
-if ($('.input-id').data('image') != '') {
-    let image = [], config = []
-    let ids = $('.input-id').data('id').toString().split(',')
-    let images = $('.input-id').data('image').toString().split(',')
-    let sizes = $('.input-id').data('size').toString().split(',')
+if ($('.input-id').length > 0) {
+    if ($('.input-id').data('urlimage') != '') {
+        let image = $('.input-id').data('urlimage')
 
-    $.each(images, function (i, val) {
-        image.push(`${location.origin}/berita/img_medium/${val}`)
-    })
-    $.each(sizes, function (i, size) {
-        config.push({ caption: 'Berita Image', size: size, url: location.origin + '/berita/delete_image', key: ids[i] })
-    })
-
-    $(".input-id").fileinput({
-        'showUpload': false,
-        'showRemove': false,
-        'showCancel': false,
-        'previewFileType': 'image',
-        'browseOnZoneClick': true,
-        'required': false,
-        'maxFileSize': 3 * 1024,
-        'uploadUrl': location.origin,
-        'allowedFileExtensions': ["jpg", "png", "jpeg"],
-        'browseLabel': 'Pilih Gambar',
-        'browseClass': 'btn btn-success btn-block',
-        'browseIcon': '<i class="fa fa-camera"></i> ',
-        'overwriteInitial': false,
-        'initialPreviewShowDelete': true,
-        'fileActionSettings': {
+        $(".input-id").fileinput({
             'showUpload': false,
-            'showRemove': true,
-        },
-        'initialPreviewAsData': true,
-        'initialPreview': image,
-        'initialPreviewConfig': config
-    })
-} else {
-    $(".input-id").fileinput({
-        'showUpload': false,
-        'showRemove': false,
-        'showCancel': false,
-        'previewFileType': 'image',
-        'browseOnZoneClick': true,
-        'required': false,
-        'maxFileSize': 3 * 1024,
-        'uploadUrl': location.origin,
-        'allowedFileExtensions': ["jpg", "png", "jpeg"],
-        'browseLabel': 'Pilih Gambar',
-        'browseClass': 'btn btn-success btn-block',
-        'browseIcon': '<i class="fa fa-camera"></i> ',
-    })
+            'showRemove': false,
+            'showCancel': false,
+            'previewFileType': 'image',
+            'browseOnZoneClick': true,
+            'required': false,
+            'maxFileSize': 3 * 1024,
+            'uploadUrl': location.origin,
+            'allowedFileExtensions': ["jpg", "png", "jpeg"],
+            'browseLabel': 'Pilih Gambar',
+            'browseClass': 'btn btn-success btn-block',
+            'browseIcon': '<i class="fa fa-camera"></i> ',
+            'overwriteInitial': true,
+            'initialPreviewShowDelete': false,
+            'fileActionSettings': {
+                'showUpload': false,
+                'showRemove': false,
+            },
+            'initialPreviewAsData': true,
+            'initialPreview': [image],
+            'initialPreviewConfig': [
+                { caption: 'Image', size: 12000, url: location.origin, key: 99 }
+            ]
+        })
+    } else {
+        $(".input-id").fileinput({
+            'showUpload': false,
+            'showRemove': false,
+            'showCancel': false,
+            'previewFileType': 'image',
+            'browseOnZoneClick': true,
+            'required': false,
+            'maxFileSize': 3 * 1024,
+            'uploadUrl': location.origin,
+            'allowedFileExtensions': ["jpg", "png", "jpeg"],
+            'browseLabel': 'Pilih Gambar',
+            'browseClass': 'btn btn-success btn-block',
+            'browseIcon': '<i class="fa fa-camera"></i> ',
+        })
+    }
 }
 
 
@@ -211,4 +206,76 @@ $(".only-alpha").on('keyup', function () {
         // $(this).addClass('border border-danger')
     }
     this.value = this.value.replace(regex, '')
+})
+
+$('.tolak-pesanan').on('click', function (e) {
+    e.preventDefault()
+    Swal.fire({
+        title: 'Anda yakin menolak pesanan ini?',
+        html: `<textarea id="alasan" class="swal2-input" placeholder="Berikan alasan Anda menolak pesanan..."></textarea>`,
+        icon: 'question',
+        confirmButtonText: 'Yakin!',
+        confirmButtonColor: '#ff0000',
+        showCancelButton: true,
+        cancelButtonColor: '#333333',
+        cancelButtonText: 'Tidak Yakin',
+        preConfirm: () => {
+            const alasan = Swal.getPopup().querySelector('#alasan').value
+            if (!alasan) {
+                Swal.showValidationMessage(`Anda harus memasukan alasan Anda!..,`)
+            }
+            let value
+            let idorder = $(this).data('idorder')
+            $.post({
+                url: $(this).attr('href'),
+                data: { alasan, idorder },
+                dataType: 'json',
+                async: false,
+                success: function (val) {
+                    return value = val
+                }
+            })
+            return value
+        }
+    }).then(() => {
+        Swal.fire('Success', 'Berhasil', 'success').then((result) => {
+            if (result.isConfirmed || result.isDismissed) {
+                window.location.href = location.href + '/home'
+            }
+        })
+    })
+})
+
+$('.rupiah-format').on('keyup', function () {
+    $(this).val(formatRupiah(this.value))
+})
+
+const formatRupiah = function (num) {
+    var str = num.toString().replace("", ""), parts = false, output = [], i = 1, formatted = null;
+    if (str.indexOf(",") > 0) {
+        parts = str.split(",");
+        str = parts[0];
+    }
+    str = str.split("").reverse();
+    for (var j = 0, len = str.length; j < len; j++) {
+        if (str[j] != ".") {
+            output.push(str[j]);
+            if (i % 3 == 0 && j < (len - 1)) {
+                output.push(".");
+            }
+            i++;
+        }
+    }
+    formatted = output.reverse().join("");
+    return ("" + formatted + ((parts) ? "," + parts[1].substr(0, 2) : ""));
+}
+
+$('select#kategori').on('change', function () {
+    let val = $(this).val()
+    $('#harga-borongan').empty()
+    val.map((v, i) => {
+        let text = $(this).find(`option[value="${v}"]`).text().toLowerCase()
+        let tarif = $(this).find(`option[value="${v}"]`).data('price')
+        $('#harga-borongan').append(`<input type="text" class="form-control ${val.length > 1 ? 'my-2' : ''}" name="harga_borongan[]" placeholder="masukan harga ${text}..." value="${tarif}" required />`)
+    })
 })

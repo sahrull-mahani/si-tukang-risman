@@ -44,6 +44,10 @@
                                 <input type="text" class="form-control only-number" id="nik" name="nik" placeholder="@ex: 75xxxxxx" value="<?= @$get->nik ?>" />
                             </div>
                             <div class="form-group item">
+                                <label for="tarif">Tarif</label>
+                                <input type="text" class="form-control" id="tarif" name="tarif" placeholder="Masukan tarfi Anda untuk harian..." value="<?= @$get->tarif ?>" />
+                            </div>
+                            <div class="form-group item">
                                 <label for="umur">Umur</label>
                                 <input type="number" min="20" max="80" class="form-control" id="umur" name="umur" placeholder="Umur" value="<?= @$get->umur ?>" required />
                             </div>
@@ -56,23 +60,34 @@
                                 <select name="kategori[]" id="kategori" data-id="<?= @$get->id ?>" class="custom-select select2" multiple>
                                     <optgroup label="Kategori">
                                         <?php foreach ($kategori as $row) : ?>
-                                            <option value="<?= $row->id ?>"><?= ucwords($row->nama_kategori) ?></option>
+                                            <option value="<?= $row->id ?>" data-price="<?= getkategoriPrice($row->id, $get->id) ?>"><?= ucwords($row->nama_kategori) ?></option>
                                         <?php endforeach ?>
                                     </optgroup>
                                 </select>
                             </div>
-                            <div class="form-group item">
-                                <label for="telp">No. Telepon</label>
+                            <div class="form-group item" id="harga-borongan"></div>
+
+                            <label for="telp">No. Telepon</label>
+                            <div class="input-group mb-3">
                                 <input type="text" class="form-control" id="telp" name="telp" placeholder="telp" value="<?= @$get->telp ?>" required />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" name="wa" id="wa" value="1" <?= $get->wa ? 'checked' : '' ?>>
+                                            <label for="wa" class="custom-control-label">Ini adalah nomor whatsapp saya</label>
+                                        </div>
+                                    </span>
+                                </div>
                             </div>
+
                             <label for="foto">Foto</label>
-                            <input class="input-id" type="file" data-urlimage="<?= $get->foto == 'profile.png' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto") ?>" data-required="false" name="foto" accept=".jpg, .png, image/jpeg, image/png">
+                            <input class="input-id" type="file" data-urlimage="<?= $get->foto == 'profile.png' ? site_url('admin_assets/img/profile.png') : base_url("Web/img_thumb/$get->foto") ?>" data-required="false" name="foto" accept=".jpg, .png, image/jpeg, image/png">
                             <br>
                             <label for="fotoproject">Foto KTP</label>
-                            <input class="input-id ktp" type="file" data-urlimage="<?= $get->foto_ktp == '' ? '/admin_assets/img/profile.png' : base_url("Berita/img_thumb/$get->foto_ktp") ?>" data-required="false" name="ktp" accept=".jpg, .png, image/jpeg, image/png">
+                            <input class="input-id ktp" type="file" data-urlimage="<?= $get->foto_ktp == '' ? site_url('admin_assets/img/profile.png') : base_url("Web/img_thumb/$get->foto_ktp") ?>" name="ktp" accept=".jpg, .png, image/jpeg, image/png">
                             <br>
                             <label for="fotoproject">Foto Project</label>
-                            <input class="input-id project" type="file" name="fotoproject[]" data-required="false" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                            <input class="input-id project" type="file" data-id="1,2,3" name="fotoproject[]" data-required="false" accept=".jpg, .png, image/jpeg, image/png" multiple>
                         </div>
                         <div class="card-footer">
                             <input type="hidden" id="id" name="id" value="<?= @$get->id ?>">

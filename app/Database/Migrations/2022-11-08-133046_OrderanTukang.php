@@ -25,11 +25,15 @@ class OrderanTukang extends Migration
                 'constraint' => '11',
                 'unsigned'   => true,
             ],
-            'lokasi' => [
+            'kategori' => [
+                'type'       => 'CHAR',
+                'constraint' => 20,
+            ],
+            'deskripsi' => [
                 'type'       => 'CHAR',
                 'constraint' => 200,
             ],
-            'tugas' => [
+            'ukuran' => [
                 'type'       => 'CHAR',
                 'constraint' => 200,
             ],
@@ -37,18 +41,33 @@ class OrderanTukang extends Migration
                 'type'       => 'ENUM',
                 'constraint' => ['borongan', 'harian'],
             ],
-            'keterangan' => [
-                'type'       => 'TEXT',
-                'null'      => true
+            'biaya' => [
+                'type'       => 'char',
+                'constraint' => 30,
+            ],
+            'konsumsi' => [
+                'type'       => 'ENUM',
+                'constraint' => ['disediakan', 'tidak disediakan'],
+            ],
+            'alat' => [
+                'type'       => 'ENUM',
+                'constraint' => ['disediakan', 'tidak disediakan'],
+            ],
+            'detail' => [
+                'type'       => 'CHAR',
+                'constraint' => 200
+            ],
+            'status' => [
+                'type'       => 'ENUM',
+                'constraint' => ['diterima', 'ditolak'],
             ],
             'rating' => [
                 'type'       => 'INT',
                 'constraint' => 2,
                 'null'       => true
             ],
-            'durasi' => [
-                'type'       => 'CHAR',
-                'constraint' => 100,
+            'keterangan' => [
+                'type'       => 'TEXT',
                 'null'       => true
             ],
             'created_at'     => [
@@ -65,8 +84,8 @@ class OrderanTukang extends Migration
 
         ]);
         $this->forge->addKey('id', true);
-        // $this->forge->addForeignKey('user_id', 'users', 'id', 'NO ACTION', 'CASCADE');
-        // $this->forge->addForeignKey('tukang_id', 'tukang', 'id', 'NO ACTION', 'CASCADE');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'NO ACTION', 'CASCADE');
+        $this->forge->addForeignKey('tukang_id', 'tukang', 'id', 'NO ACTION', 'CASCADE');
         $this->forge->createTable('orderan');
     }
 

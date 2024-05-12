@@ -115,6 +115,7 @@ class Tukang extends BaseController
                         'alamat' => $this->request->getPost('alamat')[$key],
                         'kategori' => $this->request->getPost('kategori')[$key],
                         'telp' => $this->request->getPost('telp')[$key],
+                        'wa' => $this->request->getPost('wa') ? $this->request->getPost('wa')[$key] : null,
                         'foto' => $this->request->getPost('foto')[$key],
                         'foto_ktp' => $this->request->getPost('foto_ktp')[$key],
                     ));
@@ -166,15 +167,17 @@ class Tukang extends BaseController
                 $nama = $this->request->getPost('nama');
                 $telp = $this->request->getPost('telp');
                 $categories = $this->request->getPost('kategori');
+                $prices = $this->request->getPost('harga_borongan');
 
                 $data = array(
                     'id' => $id,
                     'nama' => $nama,
-                    'nik' => $this->request->getPost('nik') != '' ? $this->request->getPost('nik') : null,
+                    'nik' => @$this->request->getPost('nik'),
+                    'tarif' => $this->request->getPost('tarif'),
                     'umur' => $this->request->getPost('umur'),
                     'alamat' => $this->request->getPost('alamat'),
-                    'id_kategori' => $this->request->getPost('kategori'),
                     'telp' => $telp,
+                    'wa' => @$this->request->getPost('wa'),
                     'foto' => $foto_name ?? ($datatukang->foto != 'profile.png' ? $datatukang->foto : 'profile.png'),
                     'foto_ktp' => $ktp_name ?? ($datatukang->foto_ktp != null ? $datatukang->foto_ktp : null),
                 );
@@ -182,10 +185,11 @@ class Tukang extends BaseController
                     $dataKategori = [];
                     if (count($categories) > 0) {
                         $this->db->table('kategori_group')->where('id_tukang', $id)->delete();
-                        foreach ($categories as $row) {
+                        foreach ($categories as $key => $row) {
                             array_push($dataKategori, [
                                 'id_tukang'     => $id,
                                 'id_kategori'   => $row,
+                                'tarif'         => $prices[$key]
                             ]);
                         }
                         $this->db->table('kategori_group')->insertBatch($dataKategori);

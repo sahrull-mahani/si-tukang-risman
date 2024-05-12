@@ -2,16 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Models\AgendaM;
 use App\Models\BeritaModel;
 use App\Models\KategoriM;
-use App\Models\PariwisataModel;
-use App\Models\ProgramModel;
 use App\Models\TukangM;
 
 class Home extends BaseController
 {
-
+    protected $beritam, $tukangm, $kategorim, $db;
     function __construct()
     {
         $this->beritam = new BeritaModel();

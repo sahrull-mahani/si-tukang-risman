@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OrderanM extends Model
 {
     protected $table = 'orderan';
-    protected $allowedFields = array('user_id', 'tukang_id', 'lokasi', 'tugas', 'jenis_kerja', 'status', 'keterangan', 'rating', 'durasi');
+    protected $allowedFields = array('user_id', 'tukang_id', 'kategori', 'deskripsi', 'ukuran', 'jenis_kerja', 'biaya', 'konsumsi', 'alat', 'detail', 'status', 'keterangan', 'rating');
     protected $returnType     = 'object';
     protected $useSoftDeletes = true;
 
@@ -19,25 +19,33 @@ class OrderanM extends Model
     protected $validationRules = [
         'user_id' => 'required|max_length[20]',
         'tukang_id' => 'required|max_length[20]',
-        'lokasi' => 'required|max_length[200]',
-        'tugas' => 'required|max_length[200]',
+        'kategori' => 'required|max_length[200]',
+        'deskripsi' => 'required|max_length[200]',
+        'ukuran' => 'required|max_length[200]',
         'jenis_kerja' => 'required',
+        'biaya' => 'required',
+        'konsumsi' => 'required',
+        'alat' => 'required',
+        'detail' => 'required',
         'status' => 'max_length[20]',
         'keterangan' => 'max_length[65535]',
         'rating' => 'max_length[100]',
-        'durasi' => 'max_length[100]',
     ];
 
     protected $validationMessages = [
         'user_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 20 Karakter'],
         'tukang_id' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 20 Karakter'],
-        'lokasi' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
-        'tugas' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
+        'kategori' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
+        'deskripsi' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
+        'ukuran' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 200 Karakter'],
         'jenis_kerja' => ['required' => 'tidak boleh kosong'],
+        'biaya' => ['required' => 'tidak boleh kosong'],
+        'konsumsi' => ['required' => 'tidak boleh kosong'],
+        'alat' => ['required' => 'tidak boleh kosong'],
+        'detail' => ['required' => 'tidak boleh kosong'],
         'status' => ['max_length' => 'Maximal  Karakter'],
         'keterangan' => ['max_length' => 'Maximal 65535 Karakter'],
         'rating' => ['max_length' => 'Maximal  Karakter'],
-        'durasi' => ['max_length' => 'Maximal 100 Karakter'],
     ];
     private function _get_datatables()
     {

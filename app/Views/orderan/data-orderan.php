@@ -51,24 +51,40 @@
                                         <td><?= $tukang->phone ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Lokasi</td>
-                                        <td><?= $tukang->lokasi ?></td>
+                                        <td>Deksripsi Pekerjaan</td>
+                                        <td><?= $tukang->deskripsi ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Tugas</td>
-                                        <td><?= $tukang->tugas ?></td>
+                                        <td>Deskripsi Ukuran</td>
+                                        <td><?= $tukang->ukuran ?></td>
                                     </tr>
                                     <tr>
                                         <td>Jenis Kerja</td>
                                         <td><?= $tukang->jenis_kerja ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Biaya</td>
+                                        <td><?= rupiah(getBiayaKategori($tukang->idtukang, $tukang->kategori)) ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Konsumsi</td>
+                                        <td><?= $tukang->konsumsi ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alat Kerja</td>
+                                        <td><?= $tukang->alat ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Deskripsi Alamat Pekerjaan</td>
+                                        <td><?= $tukang->detail ?></td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex flex-row-reverse">
                                 <div class="btn-group mt-4">
-                                    <a href="<?= site_url("orderan/tolak/$tukang->id_order/$tukang->id") ?>" class="btn btn-danger btn-ask" data-title="Anda yakin?" data-message="Anda ingin menolak pekerjaan ini?" data-icon="warning">Tolak</a>
-                                    <a href="<?= site_url("orderan/konfir/$tukang->id_order") ?>" class="btn btn-primary btn-ask" data-title="Anda yakin?" data-message="Anda akan menerima pekerjaan?, Jika anda yakin maka tekan tombol yakin dan jika tidak tekan tombol tidak yakin" data-icon="question">Terima</a>
+                                    <a href="<?= site_url('orderan/tolak') ?>" data-idorder="<?= $tukang->id ?>" class="btn btn-danger tolak-pesanan">Tolak</a>
+                                    <a href="<?= site_url("orderan/konfir/$tukang->id") ?>" class="btn btn-primary btn-ask" data-title="Anda yakin?" data-message="Anda akan menerima pekerjaan?, Jika anda yakin maka tekan tombol yakin dan jika tidak tekan tombol tidak yakin" data-icon="question">Terima</a>
                                 </div>
                             </div>
                         </div>

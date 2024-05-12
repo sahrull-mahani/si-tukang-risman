@@ -463,7 +463,6 @@ function getNotifikasiOrderan($id, $limit = null)
     't.status'    => 1,
     'keterangan'  => null,
     'rating'      => null,
-    'durasi'      => null,
   ];
   $get = $db->table('orderan o')->select('o.*, t.id t_id, u.nama_user, o.created_at')->join('tukang t', 't.id = o.tukang_id')->join('users u', 'u.id = o.user_id')->where($where)->limit($limit)->orderBy('o.id', 'desc')->get()->getResult();
   foreach ($get as $row) {
@@ -499,17 +498,31 @@ function getTukang($id)
   return $db->table('tukang t')->select('t.*')->join('users u', 'u.id = t.user_id')->where('u.id', $id)->get()->getRow();
 }
 
-function getKategori($idTukang)
+function getKategori($idTukang, $tarif = false)
 {
   $db = db_connect();
   $data = $db->table('kategori_group kg')->join('kategori k', 'k.id = kg.id_kategori')->where('id_tukang', $idTukang)->get()->getResult();
   foreach ($data as $row) {
     if (!isset($row)) continue;
-    $result[] = ucwords($row->nama_kategori);
+    $result[] = ucwords($row->nama_kategori) . ($tarif == false ? '' : "|$row->tarif|$row->satuan|$row->id");
   }
 
   if (empty($result)) return 'Kosong';
   return implode(', ', $result);
+}
+
+function getBiayaKategori($idtukang, $kategori)
+{
+  $db = db_connect();
+  foreach (explode(',', $kategori) as $ka) {
+    $where[] = $ka;
+  }
+  $data = $db->table('kategori_group')->where('id_tukang', $idtukang)->whereIn('id_kategori', $where)->get()->getResult();
+  $biaya = 0;
+  foreach ($data as $row) {
+    $biaya += $row->tarif;
+  }
+  return $biaya;
 }
 
 function getRating($angka)
@@ -526,4 +539,34 @@ function getRating($angka)
     case 5:
       return '100';
   }
+}
+
+function getRejected($idtukang)
+{
+  if (!logged_in()) {
+    return false;
+  }
+
+  $level = session('userlevel');
+  $userid = session('user_id');
+  $today = date('Y-m-d');
+  if ($level == 'users') {
+    $order = db_connect()->table('orderan')
+      ->where('user_id', $userid)
+      ->where('tukang_id', $idtukang)
+      ->where('status', 'ditolak')
+      ->where('deleted_at', $today)
+      ->get()->getRow();
+    if ($order) {
+      return $order;
+    }
+  }
+
+  return false;
+}
+
+function getkategoriPrice($idkategori, $idtukang)
+{
+  $data = db_connect()->table('kategori_group')->where('id_kategori', $idkategori)->where('id_tukang', $idtukang)->get()->getRow();
+  return $data ? $data->tarif : '';
 }

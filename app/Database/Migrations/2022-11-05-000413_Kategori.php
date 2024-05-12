@@ -19,6 +19,10 @@ class Kategori extends Migration
                 'type'          => 'char',
                 'constraint'    => 50,
             ],
+            'satuan'        => [
+                'type'          => 'char',
+                'constraint'    => 50,
+            ],
             'keterangan'     => [
                 'type'          => 'varchar',
                 'constraint'    => 255,

@@ -3,61 +3,90 @@ $('.rent').on('click', function (e) {
   let href = $(this).attr('href')
   let login = $(this).data('login')
   let idtukang = $(this).data('idtukang')
-  let status = $(this).parent().prev().find('li:contains("Status"):last').children('span.spec')
+  let tarif = $(this).data('tarif')
   if (login == 'not-login') {
     return location.href = location.origin + href
   }
-  Swal.fire({
-    title: 'Anda yakin?',
-    icon: 'question',
-    html: `<input type="text" id="lokasi" class="swal2-input" placeholder="Lokasi">
-    <textarea id="tugas" class="swal2-input" placeholder="Deskripsi pekerjaan..."></textarea>
-    <select id="jenis_kerja" class="swal2-input" style="width: 60%;">
-      <option value="harian" selected>Harian</option>
-      <option value="borongan">Borongan</option>
-    </select>`,
-    confirmButtonText: 'Rental',
-    focusConfirm: false,
-    preConfirm: () => {
-      const lokasi = Swal.getPopup().querySelector('#lokasi').value
-      const tugas = Swal.getPopup().querySelector('#tugas').value
-      const jenis_kerja = Swal.getPopup().querySelector('#jenis_kerja').value
-      if (!lokasi || !tugas || !jenis_kerja) {
-        Swal.showValidationMessage(`Data tidak boleh kosong!`)
+  $('#myModal').modal('show')
+  let name = $(this).parent().prev().find('li:nth-child(1) > span:nth-child(2)').text()
+  $('#myModal').find('.modal-title').text(`Rental ${name}`)
+  let kategori = $(this).data('kategori').split(', ')
+  $('#kategori').empty()
+  kategori.map((val, _) => {
+    let value = val.split('|')[0]
+    $('#kategori').append(`<label class="btn btn-outline-primary category">
+                            <input type="checkbox" name="kategori[]" value="${val}"> ${value}
+                          </label>`)
+  })
+  $('#harian').attr('data-value', tarif)
+  $('#myModal').find('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+  $('#myModal').find('input[name="idtukang"]').val(idtukang)
+})
+$('body').on('click', '#harga-borongan', function () {
+  let myelm = $('#kategori').find('label')
+  let n = 0
+  let satuan = []
+  myelm.each(function (i, val) {
+    let value = val.querySelector('input').value
+    value = value.split('|')
+    let biaya = parseInt(value[1])
+
+    let active = val.classList.contains('active')
+    if (active) {
+      n += biaya
+      if ($.inArray(value[2], satuan) == -1) {
+        satuan.push(value[2])
       }
-      let value
-      $.post({
-        url: location.origin + '/web/rental',
-        data: { idtukang, lokasi, tugas, jenis_kerja },
-        dataType: 'json',
-        async: false,
-        success: function (val) {
-          return value = val
+    }
+  })
+  if (n > 0) {
+    $('#borongan').removeAttr('disabled')
+  } else {
+    $('#borongan').attr('disabled', true)
+  }
+  $('#borongan').attr('data-value', n)
+  $('label[for="borongan"]').text(`Borongan ${satuan.join(', ')} : Rp. ${formatRupiah(n)}`)
+})
+$('input[name="pembayaran"]').on('change', function() {
+  $('input[name="tarif"]').val($(this).data('value'))
+})
+
+function formatRupiah(n) {
+  return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+}
+
+$('#form-rental').on('submit', function (e) {
+  e.preventDefault()
+  $.post({
+    url: $(this).attr('action'),
+    data: $(this).serialize(),
+    dataType: 'json',
+    success: function (res) {
+      console.log(res)
+      Swal.fire({
+        title: res.title,
+        text: res.text,
+        icon: res.type
+      }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed || result.isDismissed) {
+          $('#myModal').modal('toggle')
+          setTimeout(() => {
+            window.location.reload()
+          }, 500)
         }
       })
-      return value
-    }
-  }).then((result) => {
-    Swal.fire({
-      title: result.value.title,
-      text: result.value.text,
-      icon: result.value.type
-    })
-    if (result.isConfirmed) {
-      $(this).toggleClass('rent').toggleClass('disabled').text('Konfirmasi Tukang 1x24 Jam')
-      status.addClass('font-weight-bold text-primary').text('Sementara Dirental')
     }
   })
 })
 
 $('.form-done').on('submit', function (e) {
   e.preventDefault()
-  $.ajax({
-    url: location.origin + $(this).attr('action'),
-    type: 'POST',
+  $.post({
+    url: $(this).attr('action'),
     data: $(this).serialize(),
-    success: function (res) {
-      let data = $.parseJSON(res)
+    dataType: 'json',
+    success: function (data) {
       Swal.fire({
         title: data.type,
         text: data.message,
@@ -93,3 +122,13 @@ $star_rating.on('click', function (e) {
 
 SetRatingStar()
 // endrating
+
+$('.lihat-alasan-tolak').on('click', function() {
+  let alasan = $(this).data('alasan')
+  Swal.fire({
+    title: 'Alasan ditolak',
+    html: alasan,
+    icon: 'info',
+    footer: "<span class='text-danger font-italic'>Anda belum bisa melakukan rental pada tukang yang menolak pesanan Anda! \n Anda baru bisa melakukan pemesanan lagi pada tukan ini paling cepat besok!</span>"
+  })
+})

@@ -67,6 +67,9 @@
                             <i class='nav-icon fas fa-list'></i>
                             <p>
                                 Orderan
+                                <?php if (session('userlevel') == 'tukang' && count(getNotifikasiOrderan(session('user_id'))) > 0) : ?>
+                                    <span class="right badge badge-danger"><?= count(getNotifikasiOrderan(session('user_id'))) ?> Pesan</span>
+                                <?php endif ?>
                             </p>
                         </a>
                     </li>

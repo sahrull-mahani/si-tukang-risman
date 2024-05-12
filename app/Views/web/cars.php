@@ -58,29 +58,32 @@
                     <span class="icon-star-o text-warning"></span>
                   <?php endif ?>
                 </div>
-                <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>hari</div>
               </div>
               <ul class="specs">
                 <li>
                   <span>Nama</span>
                   <span class="spec"><?= ucwords($row->nama) ?></span>
                 </li>
-                <li>
-                  <span>Kategori</span>
-                  <span class="spec"><?= getKategori($row->id) ?></span>
-                </li>
+                <?php foreach (explode(', ', getKategori($row->id)) as $kat) : ?>
+                  <li>
+                    <span>Kategori</span>
+                    <span class="spec"><?= $kat ?></span>
+                  </li>
+                <?php endforeach ?>
                 <li>
                   <span>Usia</span>
                   <span class="spec"><?= "$row->umur Tahun" ?></span>
                 </li>
                 <li>
-                  <span>Telpon</span>
-                  <span class="spec"><?= $row->telp ?></span>
-                </li>
-                <li>
                   <span>Total Di Rental</span>
                   <span class="spec"><?= "$row->totalcount x di rental" ?></span>
                 </li>
+                <?php if (getRejected($row->id)) : ?>
+                  <li>
+                    <span>Alasan Ditolak</span>
+                    <span class="spec badge badge-primary lihat-alasan-tolak" style="cursor: pointer;" data-alasan="<?= getRejected($row->id)->keterangan ?>">lihat</span>
+                  </li>
+                <?php endif ?>
                 <li>
                   <span>Status</span>
                   <?= $row->status == 0 ? '<span class="spec">Rental</span>' : '<span class="spec font-weight-bold text-primary">Sementara Dirental</span>' ?>
@@ -100,7 +103,7 @@
               <?php if (session('userlevel') == 'users') : ?>
                 <div class="d-flex action">
                   <?php if ($row->status == 2 && getOrderer($row->id)->user_id == session('user_id')) : ?>
-                    <form action="/web/selesai" method="post" class="form-done">
+                    <form action="<?= site_url('web/selesai') ?>" method="post" class="form-done">
                       <input type="hidden" name="id" value="<?= $row->id ?>">
                       <div class="row mb-2">
                         <div class="col-12 mb-2">
@@ -116,24 +119,31 @@
                         <div class="col-12">
                           <textarea name="keterangan" id="" cols="30" rows="3" placeholder="Keterangan..." class="form-control border border-success"></textarea>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-8">
-                          <input type="text" name="durasi" placeholder="dursai pengerjaan.." class="form-control border border-success">
+                        <div class="col-12">
+                          <?php if ($row->wa == 1) : ?>
+                            <?php $nowa = str_replace('-', '', str_replace('+', '', $row->telp)) ?>
+                            <a href="https://api.whatsapp.com/send?phone=<?= $nowa ?>" target="_blank"><?= $row->telp ?> Hubungi Tukang Nomor Whatsapp</a>
+                          <?php else : ?>
+                            <?= $row->telp ?> Hubungi Tukang
+                            <br>
+                            <small class="text-muted">Bukan nomor whatsapp!</small>
+                          <?php endif ?>
                         </div>
-                        <div class="col-2">
-                          <button type="submit" class="btn btn-success">Selesai</button>
-                        </div>
                       </div>
+                      <button type="submit" class="btn btn-success">Selesai</button>
                     </form>
                   <?php elseif ($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
                     <a href="<?= $link ?>" data-login="<?= $login ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
                   <?php else : ?>
-                    <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                    <?php if (!getRejected($row->id)) : ?>
+                      <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                    <?php endif ?>
                   <?php endif ?>
                 </div>
               <?php else : ?>
-                <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                <?php if (!getRejected($row->id)) : ?>
+                  <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                <?php endif ?>
               <?php endif ?>
             </div>
           </div>
@@ -145,80 +155,83 @@
 </div>
 
 <!-- Modal -->
-<?php foreach ($tukang as $row) : ?>
-  <div class="modal fade" id="<?= "modal-$row->id" ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <img src="<?= $row->foto == 'profile.png' ? '/admin_assets/img/profile.png' : site_url("web/img_medium/$row->foto") ?>" alt="Image" class="img-fluid rounded mx-auto d-block" width="250">
-
-          <table class="table">
-            <thead class="bg-primary text-white">
-              <tr>
-                <th scope="col">Data</th>
-                <th scope="col">Nilai</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Nama</td>
-                <td><?= ucwords($row->nama) ?></td>
-              </tr>
-              <tr>
-                <td>Kategori</td>
-                <td><?= getKategori($row->id) ?></td>
-              </tr>
-              <tr>
-                <td>Usia</td>
-                <td><?= $row->umur ?></td>
-              </tr>
-              <tr>
-                <td>Tarif</td>
-                <td>
-                  <div class="rent-price"><span><?= rupiah($row->tarif) ?>/</span>hari</div>
-                </td>
-              </tr>
-              <tr>
-                <td>Status</td>
-                <td><?= $row->status == 0 ? '<span class="spec">Rental</span>' : '<span class="spec font-weight-bold text-primary">Sementara Dirental</span>' ?></td>
-              </tr>
-              <tr>
-                <td>Tanggal Bergabung</td>
-                <td><?= $row->created_at ?></td>
-              </tr>
-              <tr>
-                <td>Total Di Rental</td>
-                <td><?= "$row->totalcount x di rental" ?></td>
-              </tr>
-              <tr>
-                <td>Telepon</td>
-                <td><?= $row->telp ?></td>
-              </tr>
-              <tr>
-                <td>Alamat</td>
-                <td><?= $row->alamat ?></td>
-              </tr>
-            </tbody>
-          </table>
-          <?php foreach ($galeri->galeriLikeWhere("project_$row->nama", $row->id)->findAll() as $row) : ?>
-            <a href="<?= site_url("Web/img_medium/$row->sumber") ?>" data-lightbox="roadtrip">
-              <img src="<?= site_url("Web/img_thumb/$row->sumber") ?>" alt="" width="100">
-            </a>
-          <?php endforeach ?>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+<div class="modal fade" tabindex="-1" id="myModal" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+        <form action="<?= site_url('web/rental') ?>" method="post" id="form-rental">
+          <?= csrf_field() ?>
+          <input type="hidden" name="idtukang">
+          <input type="hidden" name="tarif">
+
+          <div class="btn-group btn-group-toggle" id="kategori" data-toggle="buttons"></div>
+
+          <div class="form-group">
+            <label for="deskripsi">Deskripsi</label>
+            <textarea class="form-control border" id="deskripsi" name="deskripsi" rows="3" placeholder="Masukan deskripsi pekerjaan..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="deskripsi-ukuran">Deskripsi ukuran</label>
+            <textarea class="form-control border" id="deskripsi-ukuran" name="ukuran" rows="3" placeholder="Contoh panjang berapa meter dan tinggi berapa meter..." required></textarea>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="pembayaran" id="harian" data-value="" value="harian" required>
+            <label class="form-check-label" for="harian">Harian : Rp. 175.000</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="pembayaran" id="borongan" data-value="" value="borongan" required disabled>
+            <label class="form-check-label" for="borongan">Borongan :</label>
+            <span id="harga-borongan" class="badge badge-primary" style="cursor: pointer;">hitung</span>
+            <div class="spinner-border text-primary" role="status" style="display: none;">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label for="" class="font-weight-bold">Konsumsi</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="konsumsi" id="ya" value="disediakan" required>
+              <label class="form-check-label" for="ya">Disediakan</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="konsumsi" id="tidak" value="tidak disediakan" required>
+              <label class="form-check-label" for="tidak">Tidak Disediakan</label>
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label for="" class="font-weight-bold">Alat kerja yang diperlukan</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="alat" id="ya2" value="disediakan" required>
+              <label class="form-check-label" for="ya2">Disediakan</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="alat" id="tidak2" value="tidak disediakan" required>
+              <label class="form-check-label" for="tidak2">Tidak Disediakan</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="deskripsi-ukuran">Detail alamat pekerjaan</label>
+            <textarea class="form-control border" id="deskripsi-ukuran" name="detail" rows="3" placeholder="Masukan detail alamat pekerjaan..." required></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Rental</button>
+      </div>
+      </form>
     </div>
   </div>
-<?php endforeach ?>
+</div>
 
 <div class="container site-section mb-5">
   <div class="row justify-content-center text-center">

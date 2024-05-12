@@ -31,12 +31,10 @@ class Orderan extends BaseController
             $row['nomor'] = $no++;
             $row['user_id'] = $rows->nama_user;
             $row['tukang_id'] = $rows->nama;
-            $row['lokasi'] = $rows->lokasi;
-            $row['tugas'] = substr($rows->tugas, 0, 50) . '...';
             $row['jenis_kerja'] = $rows->jenis_kerja;
+            $row['biaya'] = rupiah(getBiayaKategori($rows->tukang_id, $rows->kategori));
             $row['keterangan'] = $rows->keterangan;
             $row['rating'] = $rows->rating != null ? "$rows->rating Bintang" : '-';
-            $row['durasi'] = $rows->durasi;
             $data[] = $row;
         }
         $output = array(
@@ -90,7 +88,7 @@ class Orderan extends BaseController
         }
         $status['html']         = view('App\Views\orderan\form_modal', $this->data);
         $status['modal_title']  = 'Detail Orderan';
-        $status['modal_size']   = 'modal-lg';
+        $status['modal_size']   = 'modal-xl';
         echo json_encode($status);
     }
     public function save()
@@ -159,7 +157,11 @@ class Orderan extends BaseController
 
     public function pesanan($idorder)
     {
-        $tukang = $this->tukangm->select('tukang.id, o.id as id_order, o.lokasi, o.tugas, o.jenis_kerja, u.nama_user, u.phone')->join('orderan o', 'o.tukang_id = tukang.id')->join('users u', 'u.id = o.user_id')->where('o.id', $idorder)->first();
+        $order = $this->orderanm->find($idorder);
+        if (!$order) {
+            return redirect()->to('/home');
+        }
+        $tukang = $this->tukangm->select('tukang.id AS idtukang, o.*, u.nama_user, u.phone')->join('orderan o', 'o.tukang_id = tukang.id')->join('users u', 'u.id = o.user_id')->where('o.id', $idorder)->first();
         $data = ['title' => 'Orderan | Admin', 'breadcome' => "Pesanan $tukang->nama_user", 'url' => 'orderan/', 'm_orderan' => 'active', 'tukang' => $tukang];
         return view('orderan/data-orderan', $data);
     }
@@ -167,14 +169,19 @@ class Orderan extends BaseController
     {
         $oderan = $this->orderanm->find($idorder);
         $this->tukangm->update($oderan->tukang_id, ['status' => 2]);
+        $this->orderanm->update($idorder, ['status' => 'diterima']);
         return redirect()->to('/home')->with('success', 'Berhasil dikonfirmasi');
     }
 
-    public function tolak($idorder, $idtukang)
+    public function tolak()
     {
-        $this->tukangm->update($idtukang, ['status' => 0]);
+        $idorder = $this->request->getPost('idorder');
+        $alasan = $this->request->getPost('alasan');
+        $order = $this->orderanm->find($idorder);
+        $this->orderanm->update($idorder, ['status' => 'ditolak', 'keterangan' => $alasan]);
+        $this->tukangm->update($order->tukang_id, ['status' => 0]);
         $this->orderanm->delete($idorder);
-        return redirect()->to('/home')->with('success', 'Berhasil ditolak');
+        return $idorder;
     }
 }
 
