@@ -8,6 +8,12 @@
     </div>
 </div>
 <div class="form-group row mode2">
+    <label for="satuan" class="col-sm-3 col-form-label">Satuan Kategori</label>
+    <div class="col-sm-9 item">
+        <input type="text" class="form-control" id="satuan" name="satuan[]" value="<?= @$get->satuan ?>" placeholder="Nama Kategori" required />
+    </div>
+</div>
+<div class="form-group row mode2">
     <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
     <div class="col-sm-9 item">
         <input type="text" class="form-control" id="keterangan" name="keterangan[]" value="<?= @$get->keterangan ?>" placeholder="Ketrangan..." />

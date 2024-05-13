@@ -47,6 +47,7 @@
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
                                         <th data-field="nama">Nama Kategori</th>
+                                        <th data-field="satuan">Satuan Kategori</th>
                                         <th data-field="ket">Ketarangan</th>
                                     </tr>
                                 </thead>

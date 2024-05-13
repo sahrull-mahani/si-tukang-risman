@@ -29,6 +29,7 @@ class Kategori extends BaseController
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['nama'] = ucwords($rows->nama_kategori);
+            $row['satuan'] = $rows->satuan;
             $row['ket'] = $rows->keterangan;
             $data[] = $row;
         }
@@ -78,6 +79,7 @@ class Kategori extends BaseController
                 foreach ($nama as $key => $val) {
                     array_push($data, array(
                         'nama_kategori' => $this->request->getPost('nama_kategori')[$key],
+                        'satuan' => $this->request->getPost('satuan')[$key],
                         'keterangan' => empty($this->request->getPost('keterangan')[$key]) ? NULL : $this->request->getPost('keterangan')[$key],
                     ));
                 }
@@ -98,6 +100,7 @@ class Kategori extends BaseController
                     array_push($data, array(
                         'id' => $val,
                         'nama_kategori' => $this->request->getPost('nama_kategori')[$key],
+                        'satuan' => $this->request->getPost('satuan')[$key],
                         'keterangan' => empty($this->request->getPost('keterangan')[$key]) ? NULL : $this->request->getPost('keterangan')[$key],
                     ));
                 }

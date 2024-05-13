@@ -7,15 +7,17 @@ use CodeIgniter\Model;
 class KategoriM extends Model
 {
     protected $table = 'kategori';
-    protected $allowedFields = array('nama_kategori', 'keterangan');
+    protected $allowedFields = array('nama_kategori', 'satuan', 'keterangan');
     protected $returnType     = 'object';
 
     protected $validationRules = [
         'nama_kategori' => 'required|max_length[50]',
+        'satuan' => 'required|max_length[50]',
     ];
 
     protected $validationMessages = [
         'nama_kategori' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 50 Karakter'],
+        'satuan' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 50 Karakter'],
     ];
     private function _get_datatables()
     {
