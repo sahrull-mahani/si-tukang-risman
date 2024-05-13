@@ -1,5 +1,6 @@
 $('.rent').on('click', function (e) {
   e.preventDefault()
+  $('#myModal').find('input[type="radio"]').prop('checked', false)
   let href = $(this).attr('href')
   let login = $(this).data('login')
   let idtukang = $(this).data('idtukang')
@@ -47,7 +48,16 @@ $('body').on('click', '#harga-borongan', function () {
   $('#borongan').attr('data-value', n)
   $('label[for="borongan"]').text(`Borongan ${satuan.join(', ')} : Rp. ${formatRupiah(n)}`)
 })
-$('input[name="pembayaran"]').on('change', function() {
+$('body').on('click', 'input[name="konsumsi"]', function () {
+  let tarif = parseInt($('.rent').data('tarif'))
+  if (this.value == 'disediakan') {
+    tarif = tarif - 25000
+    $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+  } else {
+    $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+  }
+})
+$('input[name="pembayaran"]').on('change', function () {
   $('input[name="tarif"]').val($(this).data('value'))
 })
 
@@ -123,7 +133,7 @@ $star_rating.on('click', function (e) {
 SetRatingStar()
 // endrating
 
-$('.lihat-alasan-tolak').on('click', function() {
+$('.lihat-alasan-tolak').on('click', function () {
   let alasan = $(this).data('alasan')
   Swal.fire({
     title: 'Alasan ditolak',
