@@ -48,6 +48,11 @@ class Tukang extends Migration
                 'type'          => 'TINYINT',
                 'constraint'    => 1,
             ],
+            'active'     => [
+                'type'          => 'TINYINT',
+                'constraint'    => 1,
+                'default'       => 0,
+            ],
             'foto'     => [
                 'type'          => 'CHAR',
                 'constraint'    => 100,

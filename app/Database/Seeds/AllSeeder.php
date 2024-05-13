@@ -97,6 +97,7 @@ class AllSeeder extends Seeder
 				'alamat'				=> $faker->address(),
 				'telp'					=> $row->phone,
 				'wa'					=> rand(0, 1),
+				'active'				=> 1,
 				'foto'					=> $row->img,
 				'foto_ktp'			=> null,
 				'created_at'		=> Time::now(),

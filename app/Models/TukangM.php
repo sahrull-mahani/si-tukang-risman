@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class TukangM extends Model
 {
     protected $table = 'tukang';
-    protected $allowedFields = array('user_id', 'nama', 'nik', 'tarif', 'umur', 'alamat', 'telp', 'wa', 'foto', 'foto_ktp', 'status');
+    protected $allowedFields = array('user_id', 'nama', 'nik', 'tarif', 'umur', 'alamat', 'telp', 'wa', 'foto', 'foto_ktp', 'status', 'active');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 

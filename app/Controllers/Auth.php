@@ -224,7 +224,7 @@ class Auth extends BaseController
                     $additionalData = [
                         'nama_user' => $this->request->getPost('nama_user'),
                         'phone' => $this->request->getPost('phone'),
-                        'active' => $groupData[0] == 2 ? 0 : 1,
+                        'active' => 1,
                     ];
 
                     if ($this->ionAuth->isAdmin()) {
@@ -611,21 +611,21 @@ class Auth extends BaseController
             $row['username'] = $rows->username;
             $row['email'] = $rows->email;
             $row['group'] = $group;
-            $row['active'] = $rows->active
+            $row['active'] = str_contains(implode(',', $group), 'tukang') ? ($rows->aktip
                 ? '<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="activate(' .
                 "'" .
-                site_url('auth/deactivate/' . $rows->id) .
+                site_url('tukang/activate/' . $rows->id . '/0') .
                 "'" .
                 ',1)"> ' .
                 lang('Auth.index_active_link') .
                 '</a>'
                 : '<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="activate(' .
                 "'" .
-                site_url('auth/activate/' . $rows->id) .
+                site_url('tukang/activate/' . $rows->id . '/1') .
                 "'" .
                 ')"> ' .
                 lang('Auth.index_inactive_link') .
-                '</a>';
+                '</a>') : null;
             $data[] = $row;
         }
         $output = [
@@ -733,9 +733,9 @@ class Auth extends BaseController
             $this->session->setFlashdata('message', 'code is empty');
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
-        
+
         $this->data['title'] = lang('Auth.reset_password_heading');
-        
+
         $user = db_connect()->table('users')->where('forgotten_password_code', $code)->get()->getRow();
 
         if ($user) {

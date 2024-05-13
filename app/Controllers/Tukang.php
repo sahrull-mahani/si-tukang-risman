@@ -307,6 +307,26 @@ class Tukang extends BaseController
         $result = $this->db->table('kategori_group')->where('id_tukang', $id)->get()->getResult();
         return json_encode($result);
     }
+
+    public function activate($id, $status)
+    {
+        $tukang = $this->tukangm->where('user_id', $id)->set(['active' => $status])->update();
+        if ($tukang) {
+            $status = [
+                'type' => 'success',
+                'text' => 'Data has been changed',
+                'title' => 'Success',
+            ];
+        } else {
+            $status = [
+                'type' => 'error',
+                'text' => $this->tukangm->errors(),
+                'title' => 'Failed',
+            ];
+        }
+
+        return json_encode($status);
+    }
 }
 
 /* End of file Tukang.php */

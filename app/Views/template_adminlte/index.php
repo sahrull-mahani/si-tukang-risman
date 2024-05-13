@@ -115,6 +115,9 @@
 
                 <!-- Notifications Dropdown Menu -->
                 <?php if (session('userlevel') == 'tukang') : ?>
+                    <li class="nav-item">
+                        <button class="<?= getTukang(session('user_id'))->active ? 'bg-primary' : 'bg-danger' ?> rounded border-0"><?= getTukang(session('user_id'))->active ? 'Akun Anda sudah di aktifkan' : 'Akun Anda belum aktif' ?></button>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <i class="far fa-bell"></i>
