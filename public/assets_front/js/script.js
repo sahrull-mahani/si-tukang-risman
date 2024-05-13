@@ -1,6 +1,10 @@
 $('.rent').on('click', function (e) {
   e.preventDefault()
   $('#myModal').find('input[type="radio"]').prop('checked', false)
+  $('#borongan').attr('disabled', true)
+  $('#borongan').removeAttr('data-value')
+  $('label[for="borongan"]').text('Borongan')
+
   let href = $(this).attr('href')
   let login = $(this).data('login')
   let idtukang = $(this).data('idtukang')
