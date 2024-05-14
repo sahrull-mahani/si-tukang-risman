@@ -57,8 +57,10 @@ $('body').on('click', 'input[name="konsumsi"]', function () {
   if (this.value == 'disediakan') {
     tarif = tarif - 25000
     $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+    $('input[name="tarif"]').val(tarif)
   } else {
     $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+    $('input[name="tarif"]').val(tarif)
   }
 })
 $('input[name="pembayaran"]').on('change', function () {
@@ -76,7 +78,6 @@ $('#form-rental').on('submit', function (e) {
     data: $(this).serialize(),
     dataType: 'json',
     success: function (res) {
-      console.log(res)
       Swal.fire({
         title: res.title,
         text: res.text,
@@ -144,5 +145,28 @@ $('.lihat-alasan-tolak').on('click', function () {
     html: alasan,
     icon: 'info',
     footer: "<span class='text-danger font-italic'>Anda belum bisa melakukan rental pada tukang yang menolak pesanan Anda! \n Anda baru bisa melakukan pemesanan lagi pada tukan ini paling cepat besok!</span>"
+  })
+})
+
+$('.order-ditolak').on('click', function (e) {
+  e.preventDefault()
+  Swal.fire({
+    title: $(this).data('title'),
+    html: $(this).data('pesan'),
+    icon: $(this).data('icon'),
+    confirmButtonText: 'Dibaca',
+    showCancelButton: true,
+    cancelButtonText: 'Kembali',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.post({
+        url: location.origin + '/web/dibaca',
+        data: { id: $(this).data('id') },
+        dataType: 'json',
+        success: function (res) {
+          window.location.reload()
+        }
+      })
+    }
   })
 })

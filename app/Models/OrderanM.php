@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OrderanM extends Model
 {
     protected $table = 'orderan';
-    protected $allowedFields = array('user_id', 'tukang_id', 'kategori', 'deskripsi', 'ukuran', 'jenis_kerja', 'biaya', 'konsumsi', 'alat', 'detail', 'status', 'keterangan', 'rating');
+    protected $allowedFields = array('user_id', 'tukang_id', 'kategori', 'deskripsi', 'ukuran', 'jenis_kerja', 'biaya', 'konsumsi', 'alat', 'detail', 'layanan', 'tanggal_layanan', 'budget', 'status', 'keterangan', 'rating', 'dibaca');
     protected $returnType     = 'object';
     protected $useSoftDeletes = true;
 
@@ -27,6 +27,9 @@ class OrderanM extends Model
         'konsumsi' => 'required',
         'alat' => 'required',
         'detail' => 'required',
+        'layanan' => 'required',
+        'tanggal_layanan' => 'required',
+        'budget' => 'required|max_length[100]',
         'status' => 'max_length[20]',
         'keterangan' => 'max_length[65535]',
         'rating' => 'max_length[100]',
@@ -43,6 +46,9 @@ class OrderanM extends Model
         'konsumsi' => ['required' => 'tidak boleh kosong'],
         'alat' => ['required' => 'tidak boleh kosong'],
         'detail' => ['required' => 'tidak boleh kosong'],
+        'layanan' => ['required' => 'tidak boleh kosong'],
+        'tanggal_layanan' => ['required' => 'tidak boleh kosong'],
+        'budget' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 100 Karakter'],
         'status' => ['max_length' => 'Maximal  Karakter'],
         'keterangan' => ['max_length' => 'Maximal 65535 Karakter'],
         'rating' => ['max_length' => 'Maximal  Karakter'],

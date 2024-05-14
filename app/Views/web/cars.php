@@ -28,7 +28,7 @@
                 <div class="rating">
                   <?php if ($row->totalrating != null) : ?>
                     <?php
-                    $total = ceil(($row->totalcount / $row->totalrating) * 100);
+                    $total = ceil(($row->totalrating / ($row->totalcount * 5)) * 100);
                     if ($total <= 20) {
                       $total = 1;
                     } elseif ($total <= 40) {
@@ -172,13 +172,33 @@
 
           <div class="btn-group btn-group-toggle" id="kategori" data-toggle="buttons"></div>
 
-          <div class="form-group">
-            <label for="deskripsi">Deskripsi</label>
+          <div class="mt-2">
+            <label for="" class="font-weight-bold">Layanan yang dibutuhkan</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="layanan" id="perbaikan" value="perbaikan" required>
+              <label class="form-check-label" for="perbaikan">Perbaikan</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="layanan" id="pemasangan" value="pemasangan" required>
+              <label class="form-check-label" for="pemasangan">Pemasangan</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="layanan" id="renovasi" value="renovasi" required>
+              <label class="form-check-label" for="renovasi">Renovasi</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="layanan" id="bangun-baru" value="bangun baru" required>
+              <label class="form-check-label" for="bangun-baru">Bangun Baru</label>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="deskripsi">Deskripsi tentang pekerjaan yang Anda inginkan</label>
             <textarea class="form-control border" id="deskripsi" name="deskripsi" rows="3" placeholder="Masukan deskripsi pekerjaan..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label for="deskripsi-ukuran">Deskripsi ukuran</label>
+            <label for="deskripsi-ukuran">Perkiraan luas area yang akan dikerjakan (m2)</label>
             <textarea class="form-control border" id="deskripsi-ukuran" name="ukuran" rows="3" placeholder="Contoh panjang berapa meter dan tinggi berapa meter..." required></textarea>
           </div>
 
@@ -222,6 +242,16 @@
           <div class="form-group">
             <label for="deskripsi-ukuran">Detail alamat pekerjaan</label>
             <textarea class="form-control border" id="deskripsi-ukuran" name="detail" rows="3" placeholder="Masukan detail alamat pekerjaan..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="tanggal-layanan">Kapan layanan dibutuhkan</label>
+            <input type="date" name="tanggal_layanan" id="tanggal-layanan" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="budget">Perkiraan budget total untuk dilayanan ini</label>
+            <input type="text" min="0" name="budget" id="budget" class="money form-control border">
           </div>
       </div>
       <div class="modal-footer">

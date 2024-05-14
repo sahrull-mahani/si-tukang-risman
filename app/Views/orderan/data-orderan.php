@@ -51,6 +51,14 @@
                                         <td><?= $tukang->phone ?></td>
                                     </tr>
                                     <tr>
+                                        <td>Layanan</td>
+                                        <td><?= getkategoriPilih($tukang->kategori, $tukang->tukang_id) ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis Layanan</td>
+                                        <td><?= $tukang->layanan ?></td>
+                                    </tr>
+                                    <tr>
                                         <td>Deksripsi Pekerjaan</td>
                                         <td><?= $tukang->deskripsi ?></td>
                                     </tr>
@@ -64,7 +72,7 @@
                                     </tr>
                                     <tr>
                                         <td>Biaya</td>
-                                        <td><?= rupiah(getBiayaKategori($tukang->idtukang, $tukang->kategori)) ?></td>
+                                        <td><?= $tukang->jenis_kerja == 'borongan' ? rupiah(getBiayaKategori($tukang->idtukang, $tukang->kategori)) : rupiah($tukang->biaya) ?></td>
                                     </tr>
                                     <tr>
                                         <td>Konsumsi</td>

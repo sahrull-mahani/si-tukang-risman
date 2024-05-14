@@ -57,6 +57,17 @@ class OrderanTukang extends Migration
                 'type'       => 'CHAR',
                 'constraint' => 200
             ],
+            'layanan' => [
+                'type'       => 'ENUM',
+                'constraint' => ['perbaikan', 'pemasangan', 'renovasi', 'bangun baru']
+            ],
+            'tanggal_layanan' => [
+                'type'       => 'DATE',
+            ],
+            'budget' => [
+                'type'       => 'CHAR',
+                'constraint' => 100
+            ],
             'status' => [
                 'type'       => 'ENUM',
                 'constraint' => ['diterima', 'ditolak'],
@@ -69,6 +80,10 @@ class OrderanTukang extends Migration
             'keterangan' => [
                 'type'       => 'TEXT',
                 'null'       => true
+            ],
+            'dibaca'     => [
+                'type'          => 'DATE',
+                'null'          => true
             ],
             'created_at'     => [
                 'type'          => 'DATE',

@@ -84,7 +84,6 @@ class Web extends BaseController
             'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->where('tukang.active', 1)->where('o.deleted_at', null)->groupBy('tukang.nama')->findAll(),
             'galeri'    => $this->galerim,
         ];
-        // dd($data['tukang']);
         return view("App\Views\web\cars", $data);
     }
     public function rental()
@@ -95,6 +94,7 @@ class Web extends BaseController
             $idkat = explode('|', $cattegory);
             $kategori[] = end($idkat);
         }
+        $layanan = $this->request->getPost('layanan');
         $deskripsi = $this->request->getPost('deskripsi');
         $ukuran = $this->request->getPost('ukuran');
         $pembayaran = $this->request->getPost('pembayaran');
@@ -102,6 +102,8 @@ class Web extends BaseController
         $konsumsi = $this->request->getPost('konsumsi');
         $alat = $this->request->getPost('alat');
         $detail = $this->request->getPost('detail');
+        $tanggal_layanan = $this->request->getPost('tanggal_layanan');
+        $budget = $this->request->getPost('budget');
         $data = [
             'user_id'   => session('user_id'),
             'tukang_id' => $idtukang,
@@ -113,6 +115,9 @@ class Web extends BaseController
             'konsumsi' => $konsumsi,
             'alat' => $alat,
             'detail' => $detail,
+            'layanan' => $layanan,
+            'tanggal_layanan' => $tanggal_layanan,
+            'budget' => $budget,
         ];
         $this->orderanm->insert($data);
         $this->tukangm->update($idtukang, ['status' => 1]);
@@ -186,7 +191,6 @@ class Web extends BaseController
             return redirect()->back();
         }
         $notnull = [
-            'durasi !='             => null,
             'rating !='             => null,
             'orderan.keterangan !=' => null,
         ];
@@ -197,5 +201,14 @@ class Web extends BaseController
             'orderan'   => $this->orderanm->join('tukang t', 't.id = orderan.tukang_id')->where('orderan.user_id', session('user_id'))->where($notnull)->orderBy('orderan.id', 'desc')->findAll()
         ];
         return view("App\Views\web\orderan", $data);
+    }
+
+    public function dibaca()
+    {
+        $id = $this->request->getPost('id');
+        db_connect()->table('orderan')->where('id', $id)->set('dibaca', date('Y-m-d'))->update();
+        // $data = db_connect()->table('orderan o')->join('tukang t', 't.id = o.tukang_id')->where('o.id', $id)->get()->getRow();
+
+        return true;
     }
 }

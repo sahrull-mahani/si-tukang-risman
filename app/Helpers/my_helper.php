@@ -570,3 +570,29 @@ function getkategoriPrice($idkategori, $idtukang)
   $data = db_connect()->table('kategori_group')->where('id_kategori', $idkategori)->where('id_tukang', $idtukang)->get()->getRow();
   return $data ? $data->tarif : '';
 }
+
+function getkategoriPilih($kategori, $idtukang)
+{
+  $kategori = explode(',', $kategori);
+
+  foreach ($kategori as $kat) {
+    $where[] = $kat;
+  }
+  $data = db_connect()->table('kategori_group kt')->join('kategori k', 'k.id = kt.id_kategori')->where('id_tukang', $idtukang)->whereIn('id_kategori', $where)->get()->getResult();
+  foreach ($data as $row) {
+    $result[] = $row->nama_kategori;
+  }
+  return implode(', ', $result);
+}
+
+function getTolakPesanan($userid)
+{
+  $data = db_connect()->table('orderan o')
+  ->select('o.*, t.nama, t.telp, t.wa')
+  ->join('tukang t', 't.id = o.tukang_id')
+  ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')->orWhere('o.status', 'diterima')->get()->getResult();
+
+  $results['data'] = $data;
+  $results['total'] = count($data);
+  return json_decode(json_encode($results));
+}
