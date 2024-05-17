@@ -588,11 +588,59 @@ function getkategoriPilih($kategori, $idtukang)
 function getTolakPesanan($userid)
 {
   $data = db_connect()->table('orderan o')
-  ->select('o.*, t.nama, t.telp, t.wa')
-  ->join('tukang t', 't.id = o.tukang_id')
-  ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')->orWhere('o.status', 'diterima')->get()->getResult();
+    ->select('o.*, t.nama, t.telp, t.wa')
+    ->join('tukang t', 't.id = o.tukang_id')
+    ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')->orWhere('o.status', 'diterima')->get()->getResult();
 
   $results['data'] = $data;
   $results['total'] = count($data);
   return json_decode(json_encode($results));
+}
+
+function getUser($id)
+{
+  $data = db_connect()->table('users')->where('id', $id)->get()->getRow();
+  return $data;
+}
+
+function getChat($id, $level)
+{
+  $data = db_connect()->table('chat c')->select('c.*, t.nama, u.nama_user')
+    ->join('users u', 'u.id = c.id_user', 'left')
+    ->join('tukang t', 't.id = c.id_tukang', 'left')
+    ->where('c.id', $id)->get()->getRow();
+
+  if ($level == 'tukang') {
+    if ($data->id_tukang) {
+      $owner = 'right';
+      $side = 'float-left';
+      $oposite = 'float-right';
+    } else {
+      $owner = 'left';
+      $side = 'float-right';
+      $oposite = 'float-left';
+    }
+  }
+
+  if ($level == 'users') {
+    if ($data->id_user) {
+      $owner = 'right';
+      $side = 'float-left';
+      $oposite = 'float-right';
+    } else {
+      $owner = 'left';
+      $side = 'float-right';
+      $oposite = 'float-left';
+    }
+  }
+
+  $result = [
+    'nama' => $data->nama_user ?? $data->nama,
+    'waktu' => date('d M y g:i a', strtotime($data->created_at)),
+    'owner' => $owner,
+    'side' => $side,
+    'oposite' => $oposite,
+  ];
+
+  return json_decode(json_encode($result));
 }

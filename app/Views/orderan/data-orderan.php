@@ -89,7 +89,43 @@
                                 </tbody>
                             </table>
 
-                            <div class="d-flex flex-row-reverse">
+                            <input type="hidden" name="id_order" value="<?= $tukang->id ?>">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card direct-chat direct-chat-primary collapsed-card mt-4">
+                                        <div class="card-header ui-sortable-handle bg-success" data-card-widget="collapse" style="cursor: pointer;" id="chat">
+                                            <h3 class="card-title">Chat Customer</h3>
+                                            <div class="card-tools">
+                                                <span class="badge badge-primary d-none" id="badge-message" data-user="<?= session('userlevel') ?>">Pesan baru</span>
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="direct-chat-messages" id="messages" data-user="<?= session('userlevel') ?>"></div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <form action="<?= site_url('chat/sendMessage') ?>" method="post" id="form-chat">
+                                                <div class="input-group">
+                                                    <input type="hidden" name="id_order" value="<?= $tukang->id ?>">
+                                                    <input type="hidden" name="id_tukang" value="<?= $tukang->idtukang ?>">
+                                                    <input type="text" name="pesan" placeholder="Tulis pesan Anda ..." class="form-control">
+                                                    <span class="input-group-append">
+                                                        <button type="submit" class="btn btn-primary">Send</button>
+                                                    </span>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
                                 <div class="btn-group mt-4">
                                     <a href="<?= site_url('orderan/tolak') ?>" data-idorder="<?= $tukang->id ?>" class="btn btn-danger tolak-pesanan">Tolak</a>
                                     <a href="<?= site_url("orderan/konfir/$tukang->id") ?>" class="btn btn-primary btn-ask" data-title="Anda yakin?" data-message="Anda akan menerima pekerjaan?, Jika anda yakin maka tekan tombol yakin dan jika tidak tekan tombol tidak yakin" data-icon="question">Terima</a>

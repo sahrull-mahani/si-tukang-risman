@@ -81,7 +81,7 @@ class Web extends BaseController
         $data = [
             'title'     => "Proyek",
             'a_proyek'  => 'active',
-            'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->where('tukang.active', 1)->where('o.deleted_at', null)->groupBy('tukang.nama')->findAll(),
+            'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.id id_pesan, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->where('tukang.active', 1)->where('o.deleted_at', null)->groupBy('tukang.nama')->findAll(),
             'galeri'    => $this->galerim,
         ];
         return view("App\Views\web\cars", $data);

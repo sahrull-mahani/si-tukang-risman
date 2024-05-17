@@ -33,25 +33,20 @@ php spark migrate
 
 7. Jalanakan seeder
 ```javascript
-php spark db:seed basic
+php spark db:seed allseeder
 ```
 
-8. Jalanakan seeder
-```javascript
-php spark db:seed basic
-```
-
-9. Jalankan aplikasi
+8. Jalankan aplikasi
 ```javascript
 php spark serve
 ```
 
-10. buka aplikasi di browser
+9. buka aplikasi di browser
 ```javascript
 localhost:8080
 ```
 
-11. buat folder di [C:\xampp\htdocs\si-tukang-risman\writable]
+10. buat folder di [C:\xampp\htdocs\si-tukang-risman\writable]
     - thumb
     - img
 
@@ -66,5 +61,11 @@ php spark migrate:refresh
 
 2. Jalanakan seeder
 ```javascript
-php spark db:seed basic
+php spark db:seed allseeder
+```
+
+
+additonal
+```javascript
+composer require pusher/pusher-php-server
 ```

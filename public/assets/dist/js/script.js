@@ -279,3 +279,53 @@ $('select#kategori').on('change', function () {
         $('#harga-borongan').append(`<input type="text" class="form-control ${val.length > 1 ? 'my-2' : ''}" name="harga_borongan[]" placeholder="masukan harga ${text}..." value="${tarif}" required />`)
     })
 })
+
+$('#chat').on('click', function () {
+    $('#messages').empty()
+    $.post({
+        url: location.origin + '/chat/getMessages',
+        data: { id_order: $('input[name="id_order"]').val() },
+        dataType: 'json',
+        success: function (res) {
+            if (!$('#badge-message').hasClass('d-none')) {
+                $('#badge-message').addClass('d-none')
+            }
+            $('#messages').append(res.html)
+            $('#messages').animate({ scrollTop: 99999 }, 'slow')
+        }
+    })
+})
+
+$('#form-chat').on('submit', function (e) {
+    e.preventDefault()
+    $.post({
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function (res) {
+            $('#messages').append(res.html)
+            $('input[name="pesan"]').val('')
+            $('#messages').animate({ scrollTop: 99999 }, 'slow')
+        },
+        error: function (err) {
+            toastr.error(err.responseJSON.message, 'error')
+        }
+    })
+})
+
+
+// #PUSHER
+Pusher.logToConsole = false
+let pusher = new Pusher('f3ddd543d7a028f9e4b9', {
+    cluster: 'ap1'
+})
+
+let channel = pusher.subscribe('my-channel')
+channel.bind('chat', function (data) {
+    if ($(`#badge-message[data-user="${data.level}"]`).hasClass('d-none') && $('.card').hasClass('collapsed-card')) {
+        $(`#badge-message[data-user="${data.level}"]`).removeClass('d-none')
+    }
+    $(`#messages[data-user="${data.level}"]`).append(data.html)
+    $(`#messages[data-user="${data.level}"]`).animate({ scrollTop: 99999 }, 'slow')
+})
+// #END-PUSHER

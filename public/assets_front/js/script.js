@@ -170,3 +170,16 @@ $('.order-ditolak').on('click', function (e) {
     }
   })
 })
+
+// #PUSHER
+// Pusher.logToConsole = false
+// let pusher = new Pusher('f3ddd543d7a028f9e4b9', {
+//   cluster: 'ap1'
+// })
+
+// let channel = pusher.subscribe('my-channel')
+// // Surat Masuk
+// channel.bind('chat', function (data) {
+//   console.log(data)
+// })
+// #END-PUSHER

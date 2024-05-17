@@ -133,7 +133,7 @@
                       <button type="submit" class="btn btn-success">Selesai</button>
                     </form>
                   <?php elseif ($row->status == 1) : ?>
-                    <a href="<?= $link ?>" data-login="<?= $login ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
+                    <a href="<?= site_url("chat/pribadi/$row->id_pesan") ?>" class="btn btn-primary">Hubungi tukang</a>
                   <?php else : ?>
                     <?php if (!getRejected($row->id)) : ?>
                       <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
