@@ -100,7 +100,6 @@ class Web extends BaseController
         $pembayaran = $this->request->getPost('pembayaran');
         $tarif = $this->request->getPost('tarif');
         $konsumsi = $this->request->getPost('konsumsi');
-        $alat = $this->request->getPost('alat');
         $detail = $this->request->getPost('detail');
         $tanggal_layanan = $this->request->getPost('tanggal_layanan');
         $budget = $this->request->getPost('budget');
@@ -113,7 +112,6 @@ class Web extends BaseController
             'jenis_kerja' => $pembayaran,
             'biaya' => $tarif,
             'konsumsi' => $konsumsi,
-            'alat' => $alat,
             'detail' => $detail,
             'layanan' => $layanan,
             'tanggal_layanan' => $tanggal_layanan,

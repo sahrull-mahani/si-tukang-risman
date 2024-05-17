@@ -132,7 +132,7 @@
                       </div>
                       <button type="submit" class="btn btn-success">Selesai</button>
                     </form>
-                  <?php elseif ($row->status == 1 && getOrderer($row->id)->user_id == session('user_id')) : ?>
+                  <?php elseif ($row->status == 1) : ?>
                     <a href="<?= $link ?>" data-login="<?= $login ?>" class="btn btn-primary disabled">Konfirmasi Tukang 1x24 Jam</a>
                   <?php else : ?>
                     <?php if (!getRejected($row->id)) : ?>
@@ -224,18 +224,6 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="konsumsi" id="tidak" value="tidak disediakan" required>
               <label class="form-check-label" for="tidak">Tidak Disediakan</label>
-            </div>
-          </div>
-
-          <div class="mt-2">
-            <label for="" class="font-weight-bold">Alat kerja yang diperlukan</label>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="alat" id="ya2" value="disediakan" required>
-              <label class="form-check-label" for="ya2">Disediakan</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="alat" id="tidak2" value="tidak disediakan" required>
-              <label class="form-check-label" for="tidak2">Tidak Disediakan</label>
             </div>
           </div>
 

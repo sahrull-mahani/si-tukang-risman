@@ -19,8 +19,8 @@ $('.rent').on('click', function (e) {
   $('#kategori').empty()
   kategori.map((val, _) => {
     let value = val.split('|')[0]
-    $('#kategori').append(`<label class="btn btn-outline-primary category">
-                            <input type="checkbox" name="kategori[]" value="${val}"> ${value}
+    $('#kategori').append(`<label class="btn btn-outline-primary category ${kategori.length == 1 ? 'active' : ''}">
+                            <input type="checkbox" name="kategori[]" value="${val}" ${kategori.length == 1 ? 'checked' : ''}> ${value}
                           </label>`)
   })
   $('#harian').attr('data-value', tarif)

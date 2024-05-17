@@ -79,12 +79,12 @@
                                         <td><?= $tukang->konsumsi ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Alat Kerja</td>
-                                        <td><?= $tukang->alat ?></td>
-                                    </tr>
-                                    <tr>
                                         <td>Deskripsi Alamat Pekerjaan</td>
                                         <td><?= $tukang->detail ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Perkiraan Budget</td>
+                                        <td><?= rupiah($tukang->budget) ?></td>
                                     </tr>
                                 </tbody>
                             </table>

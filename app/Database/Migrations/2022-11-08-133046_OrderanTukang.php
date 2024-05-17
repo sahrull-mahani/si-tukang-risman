@@ -49,10 +49,6 @@ class OrderanTukang extends Migration
                 'type'       => 'ENUM',
                 'constraint' => ['disediakan', 'tidak disediakan'],
             ],
-            'alat' => [
-                'type'       => 'ENUM',
-                'constraint' => ['disediakan', 'tidak disediakan'],
-            ],
             'detail' => [
                 'type'       => 'CHAR',
                 'constraint' => 200
@@ -71,6 +67,7 @@ class OrderanTukang extends Migration
             'status' => [
                 'type'       => 'ENUM',
                 'constraint' => ['diterima', 'ditolak'],
+                'null'       => true
             ],
             'rating' => [
                 'type'       => 'INT',

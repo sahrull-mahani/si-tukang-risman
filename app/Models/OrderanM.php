@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OrderanM extends Model
 {
     protected $table = 'orderan';
-    protected $allowedFields = array('user_id', 'tukang_id', 'kategori', 'deskripsi', 'ukuran', 'jenis_kerja', 'biaya', 'konsumsi', 'alat', 'detail', 'layanan', 'tanggal_layanan', 'budget', 'status', 'keterangan', 'rating', 'dibaca');
+    protected $allowedFields = array('user_id', 'tukang_id', 'kategori', 'deskripsi', 'ukuran', 'jenis_kerja', 'biaya', 'konsumsi', 'detail', 'layanan', 'tanggal_layanan', 'budget', 'status', 'keterangan', 'rating', 'dibaca');
     protected $returnType     = 'object';
     protected $useSoftDeletes = true;
 
@@ -25,7 +25,6 @@ class OrderanM extends Model
         'jenis_kerja' => 'required',
         'biaya' => 'required',
         'konsumsi' => 'required',
-        'alat' => 'required',
         'detail' => 'required',
         'layanan' => 'required',
         'tanggal_layanan' => 'required',
@@ -44,7 +43,6 @@ class OrderanM extends Model
         'jenis_kerja' => ['required' => 'tidak boleh kosong'],
         'biaya' => ['required' => 'tidak boleh kosong'],
         'konsumsi' => ['required' => 'tidak boleh kosong'],
-        'alat' => ['required' => 'tidak boleh kosong'],
         'detail' => ['required' => 'tidak boleh kosong'],
         'layanan' => ['required' => 'tidak boleh kosong'],
         'tanggal_layanan' => ['required' => 'tidak boleh kosong'],
