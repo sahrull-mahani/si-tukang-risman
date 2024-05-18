@@ -3,14 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\ChatM;
+use App\Models\OrderanM;
 use Pusher\Pusher;
 
 class Chat extends BaseController
 {
-    protected $chatm, $data;
+    protected $chatm, $data, $orderanm;
     function __construct()
     {
         $this->chatm = new ChatM();
+        $this->orderanm = new OrderanM();
     }
     // public function index()
     // {
@@ -172,13 +174,17 @@ class Chat extends BaseController
             return $this->response->setJSON(['message' => $th])->setStatusCode(400);
         }
 
+        $orderan = $this->orderanm->find($id_order);
+
         $pesan = $this->chatm->where('id', $this->chatm->getInsertID())->findAll();
         
         $level = session('userlevel') == 'tukang' ? 'users' : 'tukang';
         $html = view('chat/item', ['pesan' => $pesan, 'level' => $level]);
         $message = [
             'html' => $html,
-            'level' => $level
+            'level' => $level,
+            'userid' => $orderan->user_id,
+            'tukangid' => $orderan->tukang_id
         ];
         try {
             $pusher->trigger('my-channel', 'chat', $message);

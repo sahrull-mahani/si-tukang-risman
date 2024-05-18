@@ -13,6 +13,8 @@
   </div>
 </div>
 
+<div id="user-id" data-value="<?= session('user_id') ?>"></div>
+
 <div class="site-section bg-light">
   <div class="container">
     <div class="row">
@@ -133,7 +135,7 @@
                       <button type="submit" class="btn btn-success">Selesai</button>
                     </form>
                   <?php elseif ($row->status == 1) : ?>
-                    <a href="<?= site_url("chat/pribadi/$row->id_pesan") ?>" class="btn btn-primary">Hubungi tukang</a>
+                    <a href="<?= site_url("chat/pribadi/$row->id_pesan") ?>" class="btn btn-success <?= "tukang-$row->id" ?>">Hubungi tukang</a>
                   <?php else : ?>
                     <?php if (!getRejected($row->id)) : ?>
                       <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>

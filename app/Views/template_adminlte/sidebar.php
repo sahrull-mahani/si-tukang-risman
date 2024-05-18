@@ -21,7 +21,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="<?= site_url('/home'); ?>" class="nav-link <?= isset($m_home) ? $m_home : ''; ?>">
+                    <a href="<?= session('userlevel') == 'users' ? site_url('/') : site_url('/home'); ?>" class="nav-link <?= isset($m_home) ? $m_home : ''; ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Home

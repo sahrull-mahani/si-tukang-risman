@@ -26,6 +26,13 @@ $('.rent').on('click', function (e) {
   $('#harian').attr('data-value', tarif)
   $('#myModal').find('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
   $('#myModal').find('input[name="idtukang"]').val(idtukang)
+
+  if (kategori.length == 1) {
+    $('#harga-borongan').remove()
+    $('#borongan').attr('data-value', kategori[0].split('|')[1])
+    $('#borongan').removeAttr('disabled')
+    $('label[for="borongan"]').text(`Borongan ${kategori[0].split('|')[0]} : Rp. ${formatRupiah(kategori[0].split('|')[1])}`)
+  }
 })
 $('body').on('click', '#harga-borongan', function () {
   let myelm = $('#kategori').find('label')
@@ -53,14 +60,20 @@ $('body').on('click', '#harga-borongan', function () {
   $('label[for="borongan"]').text(`Borongan ${satuan.join(', ')} : Rp. ${formatRupiah(n)}`)
 })
 $('body').on('click', 'input[name="konsumsi"]', function () {
-  let tarif = parseInt($('.rent').data('tarif'))
-  if (this.value == 'disediakan') {
-    tarif = tarif - 25000
-    $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
-    $('input[name="tarif"]').val(tarif)
+  let pekerjaan = $('input[name="pembayaran"]:checked').val()
+
+  if (pekerjaan == 'harian') {
+    let tarif = parseInt($('.rent').data('tarif'))
+    if (this.value == 'disediakan') {
+      tarif = tarif - 25000
+      $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+      $('input[name="tarif"]').val(tarif)
+    } else {
+      $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
+      $('input[name="tarif"]').val(tarif)
+    }
   } else {
-    $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
-    $('input[name="tarif"]').val(tarif)
+    $('input[name="tarif"]').val(parseInt($('input[name="pembayaran"]:checked').data('value')))
   }
 })
 $('input[name="pembayaran"]').on('change', function () {
@@ -172,14 +185,19 @@ $('.order-ditolak').on('click', function (e) {
 })
 
 // #PUSHER
-// Pusher.logToConsole = false
-// let pusher = new Pusher('f3ddd543d7a028f9e4b9', {
-//   cluster: 'ap1'
-// })
+Pusher.logToConsole = false
+let pusher = new Pusher('f3ddd543d7a028f9e4b9', {
+  cluster: 'ap1'
+})
 
-// let channel = pusher.subscribe('my-channel')
-// // Surat Masuk
-// channel.bind('chat', function (data) {
-//   console.log(data)
-// })
+let channel = pusher.subscribe('my-channel')
+// Surat Masuk
+channel.bind('chat', function (data) {
+  if ($('#user-id').length) {
+    let iduser = $('#user-id').data('value')
+    if (iduser == data.userid) {
+      $(`.tukang-${data.tukangid}`).html('Hubungi tukang <span class="badge badge-info">ada pesan</span>')
+    }
+  }
+})
 // #END-PUSHER
