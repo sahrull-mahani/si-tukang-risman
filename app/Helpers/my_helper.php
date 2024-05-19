@@ -465,15 +465,15 @@ function getNotifikasiOrderan($id, $limit = null)
     'rating'      => null,
   ];
   $get = $db->table('orderan o')->select('o.*, t.id t_id, u.nama_user, o.created_at')->join('tukang t', 't.id = o.tukang_id')->join('users u', 'u.id = o.user_id')->where($where)->limit($limit)->orderBy('o.id', 'desc')->get()->getResult();
-  foreach ($get as $row) {
-    if ($row->created_at != date('Y-m-d')) {
-      continue;
-    } else {
-      $gets[] = $row;
-    }
-  }
+  // foreach ($get as $row) {
+  //   if ($row->created_at != date('Y-m-d')) {
+  //     continue;
+  //   } else {
+  //     $gets[] = $row;
+  //   }
+  // }
 
-  return $gets ?? [];
+  return $get;
 }
 
 function getDiffrenTime($first, $second)
@@ -590,7 +590,12 @@ function getTolakPesanan($userid)
   $data = db_connect()->table('orderan o')
     ->select('o.*, t.nama, t.telp, t.wa')
     ->join('tukang t', 't.id = o.tukang_id')
-    ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')->orWhere('o.status', 'diterima')->get()->getResult();
+    ->groupStart()
+    ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')
+    ->groupEnd()->orGroupStart()
+    ->where('o.status', 'diterima')
+    ->groupEnd()
+    ->get()->getResult();
 
   $results['data'] = $data;
   $results['total'] = count($data);

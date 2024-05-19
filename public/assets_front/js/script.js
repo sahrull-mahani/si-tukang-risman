@@ -34,6 +34,9 @@ $('.rent').on('click', function (e) {
     $('label[for="borongan"]').text(`Borongan ${kategori[0].split('|')[0]} : Rp. ${formatRupiah(kategori[0].split('|')[1])}`)
   }
 })
+
+
+
 $('body').on('click', '#harga-borongan', function () {
   let myelm = $('#kategori').find('label')
   let n = 0
@@ -59,8 +62,16 @@ $('body').on('click', '#harga-borongan', function () {
   $('#borongan').attr('data-value', n)
   $('label[for="borongan"]').text(`Borongan ${satuan.join(', ')} : Rp. ${formatRupiah(n)}`)
 })
-$('body').on('click', 'input[name="konsumsi"]', function () {
+
+
+
+$('body').on('click', 'input[name="konsumsi"]', function (e) {
   let pekerjaan = $('input[name="pembayaran"]:checked').val()
+
+  if (pekerjaan == undefined) {
+    alert('Pastikan Anda sudah memilih jenis pekerjaan = Harian atau Borongan!')
+    return e.preventDefault()
+  }
 
   if (pekerjaan == 'harian') {
     let tarif = parseInt($('.rent').data('tarif'))
@@ -80,9 +91,11 @@ $('input[name="pembayaran"]').on('change', function () {
   $('input[name="tarif"]').val($(this).data('value'))
 })
 
+
 function formatRupiah(n) {
   return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
 }
+
 
 $('#form-rental').on('submit', function (e) {
   e.preventDefault()
@@ -108,6 +121,7 @@ $('#form-rental').on('submit', function (e) {
   })
 })
 
+
 $('.form-done').on('submit', function (e) {
   e.preventDefault()
   $.post({
@@ -129,6 +143,7 @@ $('.form-done').on('submit', function (e) {
 })
 
 
+
 // rating
 var $star_rating = $('.star-rating .fa-star');
 
@@ -142,14 +157,17 @@ var SetRatingStar = function () {
   });
 };
 
+
 $star_rating.on('click', function (e) {
   e.preventDefault()
   $star_rating.siblings('input.rating-value').val($(this).data('rating'));
   return SetRatingStar();
 });
 
+
 SetRatingStar()
 // endrating
+
 
 $('.lihat-alasan-tolak').on('click', function () {
   let alasan = $(this).data('alasan')
@@ -160,6 +178,8 @@ $('.lihat-alasan-tolak').on('click', function () {
     footer: "<span class='text-danger font-italic'>Anda belum bisa melakukan rental pada tukang yang menolak pesanan Anda! \n Anda baru bisa melakukan pemesanan lagi pada tukan ini paling cepat besok!</span>"
   })
 })
+
+
 
 $('.order-ditolak').on('click', function (e) {
   e.preventDefault()
@@ -183,6 +203,7 @@ $('.order-ditolak').on('click', function (e) {
     }
   })
 })
+
 
 // #PUSHER
 Pusher.logToConsole = false
