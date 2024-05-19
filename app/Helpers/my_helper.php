@@ -593,7 +593,7 @@ function getTolakPesanan($userid)
     ->groupStart()
     ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'ditolak')
     ->groupEnd()->orGroupStart()
-    ->where('o.status', 'diterima')
+    ->where('o.user_id', $userid)->where('dibaca', null)->where('o.status', 'diterima')
     ->groupEnd()
     ->get()->getResult();
 

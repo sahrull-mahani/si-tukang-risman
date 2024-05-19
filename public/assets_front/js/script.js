@@ -74,7 +74,7 @@ $('body').on('click', 'input[name="konsumsi"]', function (e) {
   }
 
   if (pekerjaan == 'harian') {
-    let tarif = parseInt($('.rent').data('tarif'))
+    let tarif = parseInt($('#harian').data('value'))
     if (this.value == 'disediakan') {
       tarif = tarif - 25000
       $('label[for="harian"]').text(`Harian : Rp. ${formatRupiah(tarif)}`)
