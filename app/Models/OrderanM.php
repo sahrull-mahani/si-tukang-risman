@@ -101,6 +101,15 @@ class OrderanM extends Model
     {
         return $this->join('users u', 'u.id = orderan.user_id');
     }
+
+    public function doned($id)
+    {
+        $this->where('id', $id);
+        $this->set('rating', '5');
+        $this->set('keterangan', 'Pesanan telah diselesaikan oleh tukang');
+        $this->set('dibaca', date('Y-m-d'));
+        return $this->update();
+    }
 }
 /* End of file OrderanM.php */
 /* Location: ./app/models/OrderanM.php */

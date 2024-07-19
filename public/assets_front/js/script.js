@@ -204,6 +204,40 @@ $('.order-ditolak').on('click', function (e) {
   })
 })
 
+$('#cari-tukang').find('input').on('keyup', function () {
+  if (this.value.length > 0) {
+    $(this).next().find('#search').show()
+  } else {
+    $(this).next().find('#search').hide()
+  }
+})
+$('#cari-tukang').find('#clear').on('click', function (e) {
+  e.preventDefault()
+  $(this).parent().prev().val('')
+  $(this).prev().hide()
+  let urlArr = location.href.split('/')
+  let newUrlArr = urlArr.slice(0, 5)
+  let url = newUrlArr.join('/')
+  location.href = url
+})
+$('#cari-tukang').find('#search').on('click', function (e) {
+  e.preventDefault()
+  let word = $(this).parent().prev().val()
+  let urlArr = location.href.split('/')
+  let newUrlArr = urlArr.slice(0, 5)
+  let url = newUrlArr.join('/') + '/' + word
+  location.href = url
+})
+$('#filter-kategori').on('change', function () {
+  const kategori = $(this).val().replace(' ', '-')
+  if (kategori == 'all') {
+    $('.kategori').removeClass('d-none')
+  } else {
+    $('.kategori').removeClass('d-none')
+    $('.kategori').addClass('d-none')
+    $(`.${kategori}`).removeClass('d-none')
+  }
+})
 
 // #PUSHER
 Pusher.logToConsole = false

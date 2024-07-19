@@ -16,6 +16,7 @@ var $singledetail = $('#single-detail')
 var $restore = $('#restore')
 var $publish = $('#publish')
 var $detail = $('#detail')
+var $doned = $('#doned')
 var url = $('#url').val()
 function ajaxRequest(params) {
     $.get(url + 'ajax_request?' + $.param(params.data)).then(function (res) {
@@ -180,6 +181,7 @@ function readFile(url) {
         $edit2.prop('disabled', !$table.bootstrapTable('getSelections').length)
         $restore.prop('disabled', !$table.bootstrapTable('getSelections').length)
         $detail.prop('disabled', !$table.bootstrapTable('getSelections').length)
+        $doned.prop('disabled', !$table.bootstrapTable('getSelections').length)
     })
     $('.create').bind('click', function (e) {
         e.preventDefault();
@@ -335,6 +337,103 @@ function readFile(url) {
         //     }
         // });
     });
+    $detail.bind('click', function (e) {
+        e.stopImmediatePropagation();
+        var ids = JSON.stringify($table.bootstrapTable('getSelections'))
+        var a = JSON.parse(ids);
+        var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        })
+        $('#modal_content').modal('show')
+        $.ajax({
+            url: url + $(this).attr('method'),
+            type: 'POST',
+            data: { id: ids },
+            dataType: "html",
+            success: function (response) {
+                var data = $.parseJSON(response);
+                $('#modal_content').modal({
+                    backdrop: 'static'
+                })
+                $('.isi-modal').html(data.html)
+                $('.modal-title').html(data.modal_title)
+                $('#modal-size').addClass(data.modal_size)
+            },
+            error: function (jqXHR, exception, thrownError) {
+                ajax_error_handling(jqXHR, exception, thrownError);
+            }
+        })
+        // var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+        //     return row.id
+        // })
+        // $.ajax({
+        //     url: url + $(this).attr('method'),
+        //     type: 'POST',
+        //     data: {
+        //         id: ids,
+        //     },
+        //     dataType: "html",
+        //     success: function (response) {
+        //         var data = $.parseJSON(response);
+        //         $('#modal_content').modal('show')
+        //         $('#modal_content').modal({
+        //             backdrop: 'static'
+        //         })
+        //         $('.isi-modal').html(data.html)
+        //         $('.modal-title').html(data.modal_title)
+        //         $('#modal-size').addClass(data.modal_size)
+        //     },
+        //     error: function (jqXHR, exception, thrownError) {
+        //         ajax_error_handling(jqXHR, exception, thrownError);
+        //     }
+        // });
+    });
+    $doned.click(function (e) {
+        let ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        })
+        let name = $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.user_id
+        })
+        let rating = $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.rating
+        })
+        if (rating != '-') {
+            Lobibox.alert('info', {
+                msg: 'Tugas telah diselesaikan',
+                buttons: { yes: { class: 'btn btn-outline-primary text-white', text: 'OKE' } }
+            })
+            return
+        }
+        Lobibox.confirm({
+            msg: 'Anda Yakin Akan mengkonfirmasi Pesanan <b>{' + name + '}</b> Telah <i>Selesai</i> ?',
+            buttons: {
+                yes: { 'class': 'btn btn-success font-italic', text: 'Ya' }, no: { 'class': 'btn btn-danger', text: 'Tidak' }
+            }, callback: function (lolibox, type) {
+                if (type === 'yes') {
+                    $.ajax({
+                        url: url + 'save',
+                        type: 'post',
+                        data: {
+                            id: ids,
+                            action: 'doned'
+                        },
+                        success: function (response) {
+                            let data = $.parseJSON(response);
+                            Lobibox.notify(data.type, {
+                                position: 'top right',
+                                msg: data.text
+                            });
+                            $('#table').bootstrapTable('refresh');
+                            $remove.attr('disabled', true)
+                        }, error: function (jqXHR, exception, thrownError) {
+                            ajax_error_handling(jqXHR, exception, thrownError);
+                        }
+                    });
+                } else { $remove.prop('disabled', true) }
+            }
+        });
+    })
     $remove.click(function () {
         var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
             return row.id

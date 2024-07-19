@@ -76,12 +76,29 @@ class Web extends BaseController
         return view("App\Views\web\services", $data);
     }
 
-    public function proyek()
+    public function proyek($nama = false)
     {
+        $tukang = $this->tukangm->selectCount('o.tukang_id', 'totalcount')
+            ->selectSum('o.rating', 'totalrating')
+            ->select('tukang.*,o.user_id orderer, o.id id_pesan, o.rating')
+            ->join('orderan o', 'o.tukang_id = tukang.id', 'left')
+            ->where('tukang.active', 1)
+            ->where('o.deleted_at', null)
+            ->groupBy('tukang.nama');
+        if ($nama) {
+            $tukang = $tukang->where('tukang.nama', $nama);
+        }
+        $tukang = $tukang->findAll();
+        if (empty($tukang)) {
+            $tukang = $nama;
+        }
+
+        $kategori = $this->kategorim->findAll();
         $data = [
             'title'     => "Proyek",
             'a_proyek'  => 'active',
-            'tukang'    => $this->tukangm->selectCount('o.tukang_id', 'totalcount')->selectSum('o.rating', 'totalrating')->select('tukang.*,o.user_id orderer, o.id id_pesan, o.rating')->join('orderan o', 'o.tukang_id = tukang.id', 'left')->where('tukang.active', 1)->where('o.deleted_at', null)->groupBy('tukang.nama')->findAll(),
+            'tukang'    => $tukang,
+            'kategori'  => $kategori,
             'galeri'    => $this->galerim,
         ];
         return view("App\Views\web\cars", $data);

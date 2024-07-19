@@ -1,6 +1,7 @@
 <?php
 
 use CodeIgniter\I18n\Time;
+use LDAP\Result;
 
 function get_format_date_sql($date)
 {
@@ -498,10 +499,16 @@ function getTukang($id)
   return $db->table('tukang t')->select('t.*')->join('users u', 'u.id = t.user_id')->where('u.id', $id)->get()->getRow();
 }
 
-function getKategori($idTukang, $tarif = false)
+function getKategori($idTukang, $tarif = false, $onlyKategori = false)
 {
   $db = db_connect();
   $data = $db->table('kategori_group kg')->join('kategori k', 'k.id = kg.id_kategori')->where('id_tukang', $idTukang)->get()->getResult();
+  if ($onlyKategori) {
+    foreach ($data as $row) {
+      $results[] = str_replace(' ', '-', $row->nama_kategori);
+    }
+    return implode(' ', $results);
+  }
   foreach ($data as $row) {
     if (!isset($row)) continue;
     $result[] = ucwords($row->nama_kategori) . ($tarif == false ? '' : "|$row->tarif|$row->satuan|$row->id");

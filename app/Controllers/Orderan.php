@@ -152,6 +152,19 @@ class Orderan extends BaseController
                 }
                 echo json_encode($status);
                 break;
+            case 'doned':
+                $id=$this->request->getPost('id');
+                $orderan = $this->orderanm->find($id[0]);
+                if ($this->orderanm->doned($id)) {
+                    $this->tukangm->where('id', $orderan->tukang_id)->set('status', 0)->update();
+                    $status['type'] = 'success';
+                    $status['text'] = '<strong>Doned..!</strong>Berhasil dikonfirmasi';
+                } else {
+                    $status['type'] = 'error';
+                    $status['text'] = '<strong>Oh snap!</strong> Proses konfirmasi data gagal.';
+                }
+                echo json_encode($status);
+                break;
         }
     }
 

@@ -18,139 +18,163 @@
 <div class="site-section bg-light">
   <div class="container">
     <div class="row">
+      <div class="col-6">
+        <select class="custom-select" id="filter-kategori" aria-label="Example select with button addon">
+          <option selected value="all">Filter Kategori</option>
+          <?php foreach ($kategori as $row) : ?>
+            <option value="<?= $row->nama_kategori ?>"><?= $row->nama_kategori ?></option>
+          <?php endforeach ?>
+        </select>
+      </div>
 
-      <?php foreach ($tukang as $key => $row) : ?>
-        <?php $key++ ?>
-        <div class="col-lg-4 col-md-6 mb-4 <?= getKategori($row->id) == 'Kosong' ? 'd-none' : '' ?>">
-          <div class="item-1">
-            <img src="<?= $row->foto == 'profile.png' ? '/admin_assets/img/profile.png' : site_url("web/img_medium/$row->foto") ?>" alt="Image" class="img-fluid" style="object-fit: cover; width: 100%; height: 320px;">
-            <div class="item-1-contents">
-              <div class="text-center">
-                <h3><a href="#" data-toggle="modal" data-target="<?= "#modal-$row->id" ?>"><?= ucwords($row->nama) ?></a></h3>
-                <div class="rating">
-                  <?php if ($row->totalrating != null) : ?>
-                    <?php
-                    $total = ceil(($row->totalrating / ($row->totalcount * 5)) * 100);
-                    if ($total <= 20) {
-                      $total = 1;
-                    } elseif ($total <= 40) {
-                      $total = 2;
-                    } elseif ($total <= 60) {
-                      $total = 3;
-                    } elseif ($total <= 80) {
-                      $total = 4;
-                    } elseif ($total <= 100) {
-                      $total = 5;
-                    } else {
-                      $total = 5;
-                    }
-                    ?>
-
-                    <?php for ($i = 1; $i <= $total; $i++) : ?>
-                      <span class="icon-star text-warning"></span>
-                    <?php endfor ?>
-                    <?php for ($i = 1; $i <= 5 - $total; $i++) : ?>
-                      <span class="icon-star-o text-warning"></span>
-                    <?php endfor ?>
-                  <?php else : ?>
-                    <span class="icon-star-o text-warning"></span>
-                    <span class="icon-star-o text-warning"></span>
-                    <span class="icon-star-o text-warning"></span>
-                    <span class="icon-star-o text-warning"></span>
-                    <span class="icon-star-o text-warning"></span>
-                  <?php endif ?>
-                </div>
-              </div>
-              <ul class="specs">
-                <li>
-                  <span>Nama</span>
-                  <span class="spec"><?= ucwords($row->nama) ?></span>
-                </li>
-                <?php foreach (explode(', ', getKategori($row->id)) as $kat) : ?>
-                  <li>
-                    <span>Kategori</span>
-                    <span class="spec"><?= $kat ?></span>
-                  </li>
-                <?php endforeach ?>
-                <li>
-                  <span>Usia</span>
-                  <span class="spec"><?= "$row->umur Tahun" ?></span>
-                </li>
-                <li>
-                  <span>Total Di Rental</span>
-                  <span class="spec"><?= "$row->totalcount x di rental" ?></span>
-                </li>
-                <?php if (getRejected($row->id)) : ?>
-                  <li>
-                    <span>Alasan Ditolak</span>
-                    <span class="spec badge badge-primary lihat-alasan-tolak" style="cursor: pointer;" data-alasan="<?= getRejected($row->id)->keterangan ?>">lihat</span>
-                  </li>
-                <?php endif ?>
-                <li>
-                  <span>Status</span>
-                  <?= $row->status == 0 ? '<span class="spec">Rental</span>' : '<span class="spec font-weight-bold text-primary">Sementara Dirental</span>' ?>
-                </li>
-              </ul>
-              <?php
-
-              if (logged_in()) {
-                $link = "/web/rental/$row->id";
-                $login = 'login';
-              } else {
-                $link = '/login';
-                $login = 'not-login';
-              }
-
-              ?>
-              <?php if (session('userlevel') == 'users') : ?>
-                <div class="d-flex action">
-                  <?php if ($row->status == 2 && getOrderer($row->id)->user_id == session('user_id')) : ?>
-                    <form action="<?= site_url('web/selesai') ?>" method="post" class="form-done">
-                      <input type="hidden" name="id" value="<?= $row->id ?>">
-                      <div class="row mb-2">
-                        <div class="col-12 mb-2">
-                          <div class="star-rating">
-                            <span class="fa-regular fa-star" data-rating="1"></span>
-                            <span class="fa-regular fa-star" data-rating="2"></span>
-                            <span class="fa-regular fa-star" data-rating="3"></span>
-                            <span class="fa-regular fa-star" data-rating="4"></span>
-                            <span class="fa-regular fa-star" data-rating="5"></span>
-                            <input type="hidden" name="rating" class="rating-value" value="3">
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <textarea name="keterangan" id="" cols="30" rows="3" placeholder="Keterangan..." class="form-control border border-success"></textarea>
-                        </div>
-                        <div class="col-12">
-                          <?php if ($row->wa == 1) : ?>
-                            <?php $nowa = str_replace('-', '', str_replace('+', '', $row->telp)) ?>
-                            <a href="https://api.whatsapp.com/send?phone=<?= $nowa ?>" target="_blank"><?= $row->telp ?> Hubungi Tukang Nomor Whatsapp</a>
-                          <?php else : ?>
-                            <?= $row->telp ?> Hubungi Tukang
-                            <br>
-                            <small class="text-muted">Bukan nomor whatsapp!</small>
-                          <?php endif ?>
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-success">Selesai</button>
-                    </form>
-                  <?php elseif ($row->status == 1) : ?>
-                    <a href="<?= site_url("chat/pribadi/$row->id_pesan") ?>" class="btn btn-success <?= "tukang-$row->id" ?>">Hubungi tukang</a>
-                  <?php else : ?>
-                    <?php if (!getRejected($row->id)) : ?>
-                      <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
-                    <?php endif ?>
-                  <?php endif ?>
-                </div>
-              <?php else : ?>
-                <?php if (!getRejected($row->id)) : ?>
-                  <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
-                <?php endif ?>
-              <?php endif ?>
-            </div>
+      <div class="col-6">
+        <div class="input-group mb-3" id="cari-tukang">
+          <input type="text" class="form-control" placeholder="Cari tukang...">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-primary" id="search" style="display: none;"><i class="fa fa-search"></i></button>
+            <button class="btn btn-sm btn-outline-danger" id="clear"><i class="fa fa-x"></i></button>
           </div>
         </div>
-      <?php endforeach ?>
+      </div>
+
+      <?php if (!is_array($tukang)) : ?>
+        <h4 class="text-center">Data dengan nama `<?= $tukang ?>` tidak ditemukan!</h4>
+      <?php endif ?>
+
+      <?php if (is_array($tukang)) : ?>
+        <?php foreach ($tukang as $key => $row) : ?>
+          <?php $key++ ?>
+          <div class="col-lg-4 col-md-6 mb-4 kategori <?= getKategori($row->id) == 'Kosong' ? 'd-none' : getKategori($row->id, onlyKategori: true) ?>">
+            <div class="item-1">
+              <img src="<?= $row->foto == 'profile.png' ? '/admin_assets/img/profile.png' : site_url("web/img_medium/$row->foto") ?>" alt="Image" class="img-fluid" style="object-fit: cover; width: 100%; height: 320px;">
+              <div class="item-1-contents">
+                <div class="text-center">
+                  <h3><a href="#" data-toggle="modal" data-target="<?= "#modal-$row->id" ?>"><?= ucwords($row->nama) ?></a></h3>
+                  <div class="rating">
+                    <?php if ($row->totalrating != null) : ?>
+                      <?php
+                      $total = ceil(($row->totalrating / ($row->totalcount * 5)) * 100);
+                      if ($total <= 20) {
+                        $total = 1;
+                      } elseif ($total <= 40) {
+                        $total = 2;
+                      } elseif ($total <= 60) {
+                        $total = 3;
+                      } elseif ($total <= 80) {
+                        $total = 4;
+                      } elseif ($total <= 100) {
+                        $total = 5;
+                      } else {
+                        $total = 5;
+                      }
+                      ?>
+
+                      <?php for ($i = 1; $i <= $total; $i++) : ?>
+                        <span class="icon-star text-warning"></span>
+                      <?php endfor ?>
+                      <?php for ($i = 1; $i <= 5 - $total; $i++) : ?>
+                        <span class="icon-star-o text-warning"></span>
+                      <?php endfor ?>
+                    <?php else : ?>
+                      <span class="icon-star-o text-warning"></span>
+                      <span class="icon-star-o text-warning"></span>
+                      <span class="icon-star-o text-warning"></span>
+                      <span class="icon-star-o text-warning"></span>
+                      <span class="icon-star-o text-warning"></span>
+                    <?php endif ?>
+                  </div>
+                </div>
+                <ul class="specs">
+                  <li>
+                    <span>Nama</span>
+                    <span class="spec"><?= ucwords($row->nama) ?></span>
+                  </li>
+                  <?php foreach (explode(', ', getKategori($row->id)) as $kat) : ?>
+                    <li>
+                      <span>Kategori</span>
+                      <span class="spec"><?= $kat ?></span>
+                    </li>
+                  <?php endforeach ?>
+                  <li>
+                    <span>Usia</span>
+                    <span class="spec"><?= "$row->umur Tahun" ?></span>
+                  </li>
+                  <li>
+                    <span>Total Di Rental</span>
+                    <span class="spec"><?= "$row->totalcount x di rental" ?></span>
+                  </li>
+                  <?php if (getRejected($row->id)) : ?>
+                    <li>
+                      <span>Alasan Ditolak</span>
+                      <span class="spec badge badge-primary lihat-alasan-tolak" style="cursor: pointer;" data-alasan="<?= getRejected($row->id)->keterangan ?>">lihat</span>
+                    </li>
+                  <?php endif ?>
+                  <li>
+                    <span>Status</span>
+                    <?= $row->status == 0 ? '<span class="spec">Rental</span>' : '<span class="spec font-weight-bold text-primary">Sementara Dirental</span>' ?>
+                  </li>
+                </ul>
+                <?php
+
+                if (logged_in()) {
+                  $link = "/web/rental/$row->id";
+                  $login = 'login';
+                } else {
+                  $link = '/login';
+                  $login = 'not-login';
+                }
+
+                ?>
+                <?php if (session('userlevel') == 'users') : ?>
+                  <div class="d-flex action">
+                    <?php if ($row->status == 2 && getOrderer($row->id)->user_id == session('user_id')) : ?>
+                      <form action="<?= site_url('web/selesai') ?>" method="post" class="form-done">
+                        <input type="hidden" name="id" value="<?= $row->id ?>">
+                        <div class="row mb-2">
+                          <div class="col-12 mb-2">
+                            <div class="star-rating">
+                              <span class="fa-regular fa-star" data-rating="1"></span>
+                              <span class="fa-regular fa-star" data-rating="2"></span>
+                              <span class="fa-regular fa-star" data-rating="3"></span>
+                              <span class="fa-regular fa-star" data-rating="4"></span>
+                              <span class="fa-regular fa-star" data-rating="5"></span>
+                              <input type="hidden" name="rating" class="rating-value" value="3">
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <textarea name="keterangan" id="" cols="30" rows="3" placeholder="Keterangan..." class="form-control border border-success"></textarea>
+                          </div>
+                          <div class="col-12">
+                            <?php if ($row->wa == 1) : ?>
+                              <?php $nowa = str_replace('-', '', str_replace('+', '', $row->telp)) ?>
+                              <a href="https://api.whatsapp.com/send?phone=<?= $nowa ?>" target="_blank"><?= $row->telp ?> Hubungi Tukang Nomor Whatsapp</a>
+                            <?php else : ?>
+                              <?= $row->telp ?> Hubungi Tukang
+                              <br>
+                              <small class="text-muted">Bukan nomor whatsapp!</small>
+                            <?php endif ?>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Selesai</button>
+                      </form>
+                    <?php elseif ($row->status == 1) : ?>
+                      <a href="<?= site_url("chat/pribadi/$row->id_pesan") ?>" class="btn btn-success <?= "tukang-$row->id" ?>">Hubungi tukang</a>
+                    <?php else : ?>
+                      <?php if (!getRejected($row->id)) : ?>
+                        <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                      <?php endif ?>
+                    <?php endif ?>
+                  </div>
+                <?php else : ?>
+                  <?php if (!getRejected($row->id)) : ?>
+                    <a href="<?= $link ?>" data-login="<?= $login ?>" data-idtukang="<?= $row->id ?>" data-kategori="<?= getKategori($row->id, true) ?>" data-tarif="<?= $row->tarif ?>" class="btn btn-primary <?= $row->status == 0 ? 'rent' : 'disabled' ?>">Rental Sekarang</a>
+                  <?php endif ?>
+                <?php endif ?>
+              </div>
+            </div>
+          </div>
+        <?php endforeach ?>
+      <?php endif ?>
 
     </div>
   </div>
@@ -238,7 +262,7 @@
             <label for="tanggal-layanan">Kapan layanan dibutuhkan</label>
             <input type="date" name="tanggal_layanan" id="tanggal-layanan" class="form-control">
           </div>
-          
+
           <div class="form-group">
             <label for="budget">Perkiraan budget total untuk dilayanan ini</label>
             <input type="text" min="0" name="budget" id="budget" class="money form-control border">
